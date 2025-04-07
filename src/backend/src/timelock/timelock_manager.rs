@@ -33,7 +33,6 @@ thread_local! {
 pub struct TimeLockManager {}
 
 impl TimeLockManager {
-
     pub fn list_locks() -> Vec<TimeLock> {
         TIME_LOCKS.with(|time_locks| {
             let time_locks = time_locks.borrow();
@@ -72,7 +71,7 @@ impl TimeLockManager {
                         return Err("Time lock has not yet expired.".to_string());
                     }
 
-                    let derivation_id = ByteBuf::from(timelock_id.to_le_bytes().to_vec());
+                    let timelock_id_bytes = ByteBuf::from(timelock_id.to_le_bytes().to_vec());
 
                     let transport_key = create_random_transport_key().await;
                     let transport_public_key = ByteBuf::from(transport_key.public_key());
@@ -83,7 +82,7 @@ impl TimeLockManager {
                             curve: VetkdCurve::Bls12381G2,
                         },
                         derivation_path: vec![],
-                        derivation_id: derivation_id.clone(),
+                        derivation_id: timelock_id_bytes.clone(),
                         encryption_public_key: transport_public_key,
                     };
 
@@ -98,7 +97,7 @@ impl TimeLockManager {
                     let vetkey = transport_key.decrypt(
                         &encrypted_vetkey,
                         &root_public_key,
-                        &derivation_id,
+                        &timelock_id_bytes,
                     )?;
 
                     let ibe_ciphertext = IBECiphertext::deserialize(time_lock.data.as_slice())?;
@@ -107,7 +106,7 @@ impl TimeLockManager {
 
                     time_lock.data = decrypted_data.to_vec();
                     time_lock.locked = false;
-             
+
                     TIME_LOCKS.with_borrow_mut(|time_locks| {
                         time_locks.insert(timelock_id, time_lock.clone());
                     });
