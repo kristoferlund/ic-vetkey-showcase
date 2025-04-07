@@ -1,10 +1,9 @@
 type Result = variant { Ok : blob; Err : text };
-type Result_1 = variant { Ok : bool; Err : text };
-type Result_2 = variant { Ok : TimeLock; Err : text };
+type Result_1 = variant { Ok : TimeLock; Err : text };
 type TimeLock = record { data : blob; locked : bool; timelock_id : nat64 };
 service : {
   get_root_public_key : () -> (Result);
   timelock_create : (nat64, blob) -> (Result_1);
   timelock_list : () -> (vec TimeLock) query;
-  timelock_open : (nat64) -> (Result_2);
+  timelock_open : (nat64) -> (Result_1);
 }

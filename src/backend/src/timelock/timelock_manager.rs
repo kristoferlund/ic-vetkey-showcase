@@ -43,7 +43,7 @@ impl TimeLockManager {
     pub fn create_lock(
         timelock_id: TimeLockId,
         encrypted_data: TimeLockEncryptedData,
-    ) -> Result<bool, String> {
+    ) -> Result<TimeLock, String> {
         // TODO: Validate data has been encrypted with the right key
 
         TIME_LOCKS.with(|time_locks| {
@@ -51,14 +51,15 @@ impl TimeLockManager {
 
             match time_locks.entry(timelock_id) {
                 Vacant(entry) => {
-                    entry.insert(TimeLock {
+                    let new_lock = TimeLock {
                         timelock_id,
-                        data: encrypted_data,
+                        data: encrypted_data.clone(),
                         locked: true,
-                    });
-                    Ok(true)
+                    };
+                    entry.insert(new_lock.clone());
+                    Ok(new_lock)
                 }
-                Occupied(_) => Err("User already has a time lock.".to_string()),
+                Occupied(_) => Err("Time lock already exists".to_string()),
             }
         })
     }
@@ -116,7 +117,7 @@ impl TimeLockManager {
                     Ok(time_lock)
                 }
             }
-            None => Err("Lock not found.".to_string()),
+            None => Err("TimeLock not found.".to_string()),
         }
     }
 
@@ -131,7 +132,7 @@ impl TimeLockManager {
         TIME_LOCKS.with(|time_locks| {
             let mut time_locks = time_locks.borrow_mut();
             match time_locks.entry(timlock_id) {
-                Vacant(_) => Err("User does not have a time lock.".to_string()),
+                Vacant(_) => Err("TimeLock does not exist.".to_string()),
                 Occupied(entry) => {
                     entry.remove();
                     Ok(true)

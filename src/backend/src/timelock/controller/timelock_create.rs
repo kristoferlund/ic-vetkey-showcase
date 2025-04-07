@@ -1,6 +1,6 @@
 use crate::{
     auth::auth_guard_no_anon,
-    timelock::timelock_manager::{TimeLockEncryptedData, TimeLockId, TimeLockManager},
+    timelock::timelock_manager::{TimeLock, TimeLockEncryptedData, TimeLockId, TimeLockManager},
 };
 use ic_cdk::update;
 
@@ -8,7 +8,7 @@ use ic_cdk::update;
 async fn timelock_create(
     timelock_id: TimeLockId,
     encrypted_data: TimeLockEncryptedData,
-) -> Result<bool, String> {
+) -> Result<TimeLock, String> {
     auth_guard_no_anon()?;
     TimeLockManager::create_lock(timelock_id, encrypted_data)
 }
