@@ -1,8 +1,9 @@
-import LoginCard from "@/components/login-card";
-import icLogo from "../assets/ic.svg";
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+
 import Header from "@/components/header";
+import LoginCard from "@/components/login-card";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import icLogo from "../assets/ic.svg";
 
 export const Route = createRootRoute({
   component: () => (
@@ -10,18 +11,10 @@ export const Route = createRootRoute({
       <Header />
       <div className="flex flex-col items-center w-full py-10">
         <div className="flex flex-col items-center gap-10 mt-20 w-[400px]">
-          <a
-            href="https://internetcomputer.org"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <Link to="/">
             <img src={icLogo} alt="ICP logo" className="h-20" />
-          </a>
+          </Link>
           <h1 className="text-xl font-semibold">VetKeys Showcase</h1>
-          <nav className="flex gap-5 underline">
-            <Link to="/">/home</Link>
-            <Link to="/timelock">/timelock</Link>
-          </nav>
           <LoginCard />
         </div>
 

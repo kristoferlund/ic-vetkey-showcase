@@ -15,23 +15,21 @@ export default function LoginCard() {
   }
 
   return (
-    <div className="flex flex-col bg-[#522785] p-10 rounded-xl items-center text-lg text-white gap-5">
-      <div className="text-center">
-        Login with any username to access showcase, no password needed.
+    <div className="flex flex-col bg-[#9a0063]/50 p-5 rounded-xl text-lg text-white gap-5">
+      <h2>Login</h2>
+      <div>
+        Login with any username to access all showcase functionality, no
+        password needed.
       </div>
-      <form className="w-full flex flex-col gap-2" action={doLogin}>
+      <form className="w-full flex flex-col gap-3" action={doLogin}>
         <Input
           type="text"
           name="username"
           placeholder="Username"
-          className="w-full text-white-lg text-center text-lg"
+          className="w-full text-white-lg text-lg"
           data-1p-ignore
         />
-        <Button
-          type="submit"
-          className="w-full text-lg text-[#522785] bg-white/50"
-          size={"lg"}
-        >
+        <Button type="submit" className="w-full text-lg" size={"lg"}>
           Login
         </Button>
       </form>

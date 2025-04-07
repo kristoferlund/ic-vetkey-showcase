@@ -50,7 +50,7 @@ export default function TimeLockListCard() {
   if (!timeLockList) return null;
 
   return (
-    <div className="w-full flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-5">
       {timeLockList.map((lock) => {
         const released = lock.date <= now;
 

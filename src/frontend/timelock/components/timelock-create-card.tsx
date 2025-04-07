@@ -8,7 +8,7 @@ export default function TimeLockCreateCard() {
   const { mutateAsync: createLock, isPending } = useTimeLockCreate();
   const { actor: backend } = useBackendActor();
 
-  const doLogin = async (formData: FormData) => {
+  const doCreateLock = async (formData: FormData) => {
     const releaseTimeSeconds = Number(formData.get("release_time"));
 
     if (Number.isNaN(releaseTimeSeconds)) {
@@ -24,13 +24,18 @@ export default function TimeLockCreateCard() {
   const disabled = isPending || !backend;
 
   return (
-    <div className="w-full flex flex-col items-center text-lg text-white gap-5">
-      <form className="w-full flex flex-col gap-3" action={doLogin}>
+    <div className="w-full flex flex-col text-lg text-white gap-5 border p-5 bg-white/10 rounded-2xl">
+      <h2>Timelock</h2>
+      <div>
+        Encrypt a message and set a release time. After the release time, anyone
+        can decrypt the message.
+      </div>
+      <form className="w-full flex flex-col gap-3" action={doCreateLock}>
         <Input
           type="text"
           name="message"
           placeholder="Message"
-          className="w-full text-white-lg text-center text-lg"
+          className="w-full text-white-lg text-lg"
           data-1p-ignore
           disabled={disabled}
         />
@@ -38,7 +43,7 @@ export default function TimeLockCreateCard() {
           type="number"
           name="release_time"
           placeholder="Release time in seconds"
-          className="w-full text-white-lg text-center text-lg"
+          className="w-full text-white-lg text-lg"
           data-1p-ignore
           disabled={disabled}
         />
