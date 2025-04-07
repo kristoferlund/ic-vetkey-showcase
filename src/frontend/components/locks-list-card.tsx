@@ -13,10 +13,13 @@ export default function LocksListCard() {
   return (
     <div className="flex flex-col bg-[#522785] p-10 rounded-xl items-center text-lg text-white gap-5">
       {timeLockList.map((lock) => (
-        <div key={lock.key_id} className="text-center">
-          <div>Message: {lock.data}</div>
+        <div key={lock.timelock_id} className="text-center">
+          <div>
+            Message:{" "}
+            {lock.locked ? "XXXXXX" : new TextDecoder().decode(lock.data)}
+          </div>
           <div>Release Time: {lock.date.toLocaleTimeString()}</div>
-          <Button onClick={() => openLock({ key_id: lock.key_id })}>
+          <Button onClick={() => openLock({ lock_id: lock.timelock_id })}>
             Open Lock
           </Button>
         </div>

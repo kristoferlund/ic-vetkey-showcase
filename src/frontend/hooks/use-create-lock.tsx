@@ -3,64 +3,51 @@ import { bigintToLEUint8Array } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import * as vetkd from "ic-vetkd-utils";
 import { queryClient } from "@/main";
-// export default function useGreet(onSuccess: (data: string) => void) {
-//   return useMutation({
-//     mutationFn: (name: string) => {
-//       return backend.timelock_list();
-//     },
-//     onSuccess,
-//   });
-// }
-//
+
+type CreateLockArgs = {
+  // The message to be encrypted
+  message: string;
+  // Number of seconds until the lock is released
+  releaseTimeSeconds: number;
+};
 
 export default function useCreateLock() {
   const { actor: backend } = useBackendActor();
 
   return useMutation({
-    mutationFn: async ({
-      message,
-      releaseTimeSeconds,
-    }: {
-      /// The message to be encrypted
-      message: string;
-      /// Number of seconds until the lock is released
-      releaseTimeSeconds: number;
-    }) => {
+    mutationFn: async ({ message, releaseTimeSeconds }: CreateLockArgs) => {
       if (!backend) {
         console.error("Backend actor not available");
         return;
       }
 
-      console.log(Date.now());
-
-      const releaseTimeNanos = BigInt(releaseTimeSeconds) * 1_000_000_000n;
-      const keyResult =
-        await backend.timelock_get_encryption_key(releaseTimeNanos);
-
-      if ("Err" in keyResult) {
-        console.error("Error getting encryption key", keyResult.Err);
+      const rootPublicKeyResult = await backend.get_root_public_key();
+      if ("Err" in rootPublicKeyResult) {
+        console.error(
+          "Error getting root vetket public key",
+          rootPublicKeyResult.Err,
+        );
         return;
       }
+      const rootPublicKey = rootPublicKeyResult.Ok as Uint8Array;
 
-      const { lock_key_id: lockKeyId, lock_public_key: lockPublicKey } =
-        keyResult.Ok;
+      const messageBytes = new TextEncoder().encode(message);
 
-      console.log("Canister public key", lockPublicKey);
+      const releaseTimeNanos = BigInt(releaseTimeSeconds) * 1_000_000_000n;
+      const timeLockId = BigInt(Date.now()) * 1_000_000n + releaseTimeNanos;
+      const timeLockIdBytes = bigintToLEUint8Array(timeLockId, 8);
 
       const seed = window.crypto.getRandomValues(new Uint8Array(32));
-      const messageBytes = new TextEncoder().encode(message);
-      const lockKeyIdBytes = bigintToLEUint8Array(lockKeyId, 8);
 
-      console.log("lockKeyId", lockKeyIdBytes);
       const encryptedMessage = vetkd.IBECiphertext.encrypt(
-        lockPublicKey as Uint8Array,
+        rootPublicKey,
+        timeLockIdBytes,
         messageBytes,
-        lockKeyIdBytes,
         seed,
       );
 
       const lockResult = await backend.timelock_create(
-        lockKeyId,
+        timeLockId,
         encryptedMessage.serialize(),
       );
 
@@ -73,7 +60,7 @@ export default function useCreateLock() {
         queryKey: ["timelock_list"],
       });
 
-      return keyResult.Ok;
+      return lockResult.Ok;
     },
   });
 }

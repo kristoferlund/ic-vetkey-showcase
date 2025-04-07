@@ -13,7 +13,7 @@ export default function useTimeLockList() {
       const locks = await backend.timelock_list();
 
       const timeLockList = locks.map((lock) => {
-        const lockDate = new Date(Number(lock.key_id / 1_000_000n));
+        const lockDate = new Date(Number(lock.timelock_id / 1_000_000n));
         return {
           ...lock,
           date: lockDate,
