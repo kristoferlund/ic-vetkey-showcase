@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
 async function createIdentity(username: string) {
@@ -16,19 +17,31 @@ interface IdentityState {
   logout: () => void;
 }
 
-export const useIdentityStore = create<IdentityState>((set) => ({
-  identity: undefined,
-  username: undefined,
-  login: async (username: string) => {
-    set({
-      identity: await createIdentity(username),
-      username,
-    });
-  },
-  logout: () => {
-    set({
+export const useIdentityStore = create<IdentityState>()(
+  persist(
+    (set) => ({
       identity: undefined,
       username: undefined,
-    });
-  },
-}));
+      login: async (username: string) => {
+        const identity = await createIdentity(username);
+        set({ identity, username });
+      },
+      logout: () => {
+        set({ identity: undefined, username: undefined });
+      },
+    }),
+    {
+      name: "identity-storage",
+      partialize: (state) => ({
+        username: state.username,
+      }),
+      onRehydrateStorage: () => async (state) => {
+        const username = state?.username;
+        if (username) {
+          const identity = await createIdentity(username);
+          state.identity = identity;
+        }
+      },
+    },
+  ),
+);
