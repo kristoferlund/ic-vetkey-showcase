@@ -2,7 +2,7 @@ import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 
-export default function useOpenLock() {
+export default function useTimeLockOpen() {
   const { actor: backend } = useBackendActor();
 
   return useMutation({
@@ -18,8 +18,6 @@ export default function useOpenLock() {
         console.error("Error unlocking lock:", result.Err);
         return;
       }
-
-      console.log(result.Ok);
 
       await queryClient.invalidateQueries({
         queryKey: ["timelock_list"],

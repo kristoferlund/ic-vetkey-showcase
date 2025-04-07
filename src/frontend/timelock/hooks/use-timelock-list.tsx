@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { backend } from "../../backend/declarations/index";
+import { backend } from "../../../backend/declarations/index";
 import { TimeLock } from "src/backend/declarations/backend.did";
 
 type TimeLockExtended = TimeLock & {
@@ -12,13 +12,17 @@ export default function useTimeLockList() {
     queryFn: async (): Promise<TimeLockExtended[]> => {
       const locks = await backend.timelock_list();
 
-      const timeLockList = locks.map((lock) => {
-        const lockDate = new Date(Number(lock.timelock_id / 1_000_000n));
-        return {
-          ...lock,
-          date: lockDate,
-        };
-      });
+      const timeLockList = locks
+        .map((lock) => {
+          const lockDate = new Date(Number(lock.timelock_id / 1_000_000n));
+          return {
+            ...lock,
+            date: lockDate,
+          };
+        })
+        .sort((a, b) => {
+          return a.timelock_id < b.timelock_id ? 1 : -1;
+        });
 
       return timeLockList;
     },
