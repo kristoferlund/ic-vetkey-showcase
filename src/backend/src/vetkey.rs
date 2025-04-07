@@ -1,7 +1,6 @@
 use crate::chainkey_testing_canister::{
     VetkdCurve, VetkdPublicKeyArgs, VetkdPublicKeyArgsKeyId, CHAINKEY_TESTING_CANISTER,
 };
-use ic_cdk::api::management_canister::main::raw_rand;
 use ic_vetkd_utils::TransportSecretKey;
 use serde_bytes::ByteBuf;
 use std::cell::RefCell;
@@ -12,8 +11,8 @@ thread_local! {
     static CANISTER_PUBLIC_KEY: RefCell<Option<ByteBuf>> = const { RefCell::new(None) };
 }
 
-pub async fn create_random_transport_key() -> TransportSecretKey {
-    let (seed,) = raw_rand().await.unwrap();
+pub fn create_empty_transport_key() -> TransportSecretKey {
+    let seed = vec![0u8; 32];
     TransportSecretKey::from_seed(seed).unwrap()
 }
 

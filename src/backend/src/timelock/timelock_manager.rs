@@ -3,7 +3,7 @@ use crate::{
         VetkdCurve, VetkdDeriveEncryptedKeyArgs, VetkdDeriveEncryptedKeyArgsKeyId,
         CHAINKEY_TESTING_CANISTER,
     },
-    vetkey::{create_random_transport_key, get_root_public_key, VETKEY_PUBLIC_KEY_NAME},
+    vetkey::{create_empty_transport_key, get_root_public_key, VETKEY_PUBLIC_KEY_NAME},
 };
 use candid::CandidType;
 use ic_vetkd_utils::IBECiphertext;
@@ -74,7 +74,7 @@ impl TimeLockManager {
 
                     let timelock_id_bytes = ByteBuf::from(timelock_id.to_le_bytes().to_vec());
 
-                    let transport_key = create_random_transport_key().await;
+                    let transport_key = create_empty_transport_key();
                     let transport_public_key = ByteBuf::from(transport_key.public_key());
 
                     let args = VetkdDeriveEncryptedKeyArgs {
