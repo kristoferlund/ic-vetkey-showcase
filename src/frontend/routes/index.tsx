@@ -17,10 +17,12 @@ function Index() {
       <div>This showcase app demostrates some use cases of VetKeys:</div>
       <Link to="/timelock">
         <div className="flex items-center gap-4 border p-5 rounded-md bg-white/10 hover:bg-white/20">
-          <Timer className="w-10 h-10 flex-shrink-0" />
-          <h2 className="underline">Timelock</h2>
-          <div className="text-sm text-gray-300">
-            Encrypt a message and set a release time
+          <Timer className="w-12 h-12 flex-shrink-0" />
+          <div className="flex flex-col gap-1">
+            <h2>Timelock</h2>
+            <div className="text-sm text-gray-400">
+              Encrypt a message and set a release time
+            </div>
           </div>
         </div>
       </Link>
