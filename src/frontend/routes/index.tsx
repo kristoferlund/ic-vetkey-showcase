@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
-import { Timer } from "lucide-react";
+import { Timer, Lock } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -26,9 +26,17 @@ function Index() {
           </div>
         </div>
       </Link>
-      <div className="flex items-center gap-4 border p-5 rounded-md bg-white/10 hover:bg-white/20">
-        <div className="text-sm text-gray-300">(more examples coming)</div>
-      </div>
+      <Link to="/encrypted-notes">
+        <div className="flex items-center gap-4 border p-5 rounded-md bg-white/10 hover:bg-white/20">
+          <Lock className="w-12 h-12 flex-shrink-0" />
+          <div className="flex flex-col gap-1">
+            <h2>Encrypted Note</h2>
+            <div className="text-sm text-gray-400">
+              Store a secure note that only you can decrypt
+            </div>
+          </div>
+        </div>
+      </Link>
       <h2>Links</h2>
 
       <div>
@@ -45,14 +53,14 @@ function Index() {
 
       <div>
         <a
-          href="https://github.com/dfinity/vetkd-devkit"
+          href="https://github.com/dfinity/vetkeys"
           target="_blank"
           rel="noreferrer"
           className="underline"
         >
-          VetKeys Devkit
+          VetKeys Tools
         </a>{" "}
-        – Tools designed to help developers integrate VetKeys into their ICP
+        – Designed to help developers integrate VetKeys into their ICP
         applications.
       </div>
 

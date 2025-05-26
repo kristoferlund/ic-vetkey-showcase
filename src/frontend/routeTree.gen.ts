@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TimelockImport } from './routes/timelock'
+import { Route as EncryptedNotesImport } from './routes/encrypted-notes'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -19,6 +20,12 @@ import { Route as IndexImport } from './routes/index'
 const TimelockRoute = TimelockImport.update({
   id: '/timelock',
   path: '/timelock',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EncryptedNotesRoute = EncryptedNotesImport.update({
+  id: '/encrypted-notes',
+  path: '/encrypted-notes',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -39,6 +46,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/encrypted-notes': {
+      id: '/encrypted-notes'
+      path: '/encrypted-notes'
+      fullPath: '/encrypted-notes'
+      preLoaderRoute: typeof EncryptedNotesImport
+      parentRoute: typeof rootRoute
+    }
     '/timelock': {
       id: '/timelock'
       path: '/timelock'
@@ -53,36 +67,41 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/encrypted-notes': typeof EncryptedNotesRoute
   '/timelock': typeof TimelockRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/encrypted-notes': typeof EncryptedNotesRoute
   '/timelock': typeof TimelockRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/encrypted-notes': typeof EncryptedNotesRoute
   '/timelock': typeof TimelockRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/timelock'
+  fullPaths: '/' | '/encrypted-notes' | '/timelock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/timelock'
-  id: '__root__' | '/' | '/timelock'
+  to: '/' | '/encrypted-notes' | '/timelock'
+  id: '__root__' | '/' | '/encrypted-notes' | '/timelock'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  EncryptedNotesRoute: typeof EncryptedNotesRoute
   TimelockRoute: typeof TimelockRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  EncryptedNotesRoute: EncryptedNotesRoute,
   TimelockRoute: TimelockRoute,
 }
 
@@ -97,11 +116,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/encrypted-notes",
         "/timelock"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/encrypted-notes": {
+      "filePath": "encrypted-notes.tsx"
     },
     "/timelock": {
       "filePath": "timelock.tsx"

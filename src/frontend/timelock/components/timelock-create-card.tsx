@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useTimeLockCreate from "../hooks/use-timelock-create";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Timer } from "lucide-react";
 import { useBackendActor } from "@/backend-actor";
 
 export default function TimeLockCreateCard() {
@@ -25,7 +25,10 @@ export default function TimeLockCreateCard() {
 
   return (
     <div className="w-full flex flex-col text-lg text-white gap-5 border p-5 bg-white/10 rounded-2xl">
-      <h2>Timelock</h2>
+      <div className="flex items-center gap-2">
+        <Timer className="w-6 h-6" />
+        <h2>Timelock</h2>
+      </div>
       <div>
         Encrypt a message and set a release time. After the release time, anyone
         can decrypt the message.
