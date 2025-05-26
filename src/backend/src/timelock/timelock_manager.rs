@@ -1,13 +1,11 @@
-use crate::{
-    chainkey_testing_canister::{
-        VetkdCurve, VetkdDeriveEncryptedKeyArgs, VetkdDeriveEncryptedKeyArgsKeyId,
-        CHAINKEY_TESTING_CANISTER,
-    },
-    vetkey::{create_empty_transport_key, get_root_public_key, VETKEY_PUBLIC_KEY_NAME},
+use crate::vetkey::{
+    create_empty_transport_key, get_root_public_key, system_api_canister_id, vetkd_key_id,
 };
 use candid::CandidType;
-use ic_vetkd_utils::IBECiphertext;
-use serde_bytes::ByteBuf;
+use ic_vetkeys::{
+    vetkd_api_types::{VetKDDeriveKeyReply, VetKDDeriveKeyRequest},
+    DerivedPublicKey, EncryptedVetKey, IBECiphertext,
+};
 use std::{
     cell::RefCell,
     collections::{
@@ -72,34 +70,40 @@ impl TimeLockManager {
                         return Err("Time lock has not yet expired.".to_string());
                     }
 
-                    let timelock_id_bytes = ByteBuf::from(timelock_id.to_le_bytes().to_vec());
-
+                    let input = timelock_id.to_le_bytes().to_vec();
                     let transport_key = create_empty_transport_key();
-                    let transport_public_key = ByteBuf::from(transport_key.public_key());
+                    let transport_public_key = transport_key.public_key().to_vec();
 
-                    let args = VetkdDeriveEncryptedKeyArgs {
-                        key_id: VetkdDeriveEncryptedKeyArgsKeyId {
-                            name: VETKEY_PUBLIC_KEY_NAME.to_string(),
-                            curve: VetkdCurve::Bls12381G2,
-                        },
-                        derivation_path: vec![],
-                        derivation_id: timelock_id_bytes.clone(),
-                        encryption_public_key: transport_public_key,
+                    let args = VetKDDeriveKeyRequest {
+                        input: input.clone(),
+                        context: vec![],
+                        transport_public_key,
+                        key_id: vetkd_key_id(),
                     };
 
-                    let encrypted_vetkey = CHAINKEY_TESTING_CANISTER
-                        .vetkd_derive_encrypted_key(args)
-                        .await
-                        .map(|(res,)| res.encrypted_key)
-                        .map_err(|(code, msg)| format!("{}, code: {:?}", msg, code))?;
+                    let response = ic_cdk::call::Call::unbounded_wait(
+                        system_api_canister_id(),
+                        "vetkd_derive_key",
+                    )
+                    .with_arg(args)
+                    .with_cycles(26_153_846_153)
+                    .await
+                    .unwrap();
+
+                    let result = response
+                        .candid::<VetKDDeriveKeyReply>()
+                        .map_err(|e| e.to_string())?;
+
+                    let encrypted_vetkey =
+                        EncryptedVetKey::deserialize(&result.encrypted_key).unwrap();
 
                     let root_public_key = get_root_public_key().await?;
+                    let derived_root_public_key =
+                        DerivedPublicKey::deserialize(&root_public_key).unwrap();
 
-                    let vetkey = transport_key.decrypt(
-                        &encrypted_vetkey,
-                        &root_public_key,
-                        &timelock_id_bytes,
-                    )?;
+                    let vetkey = encrypted_vetkey
+                        .decrypt_and_verify(&transport_key, &derived_root_public_key, &input)
+                        .unwrap();
 
                     let ibe_ciphertext = IBECiphertext::deserialize(time_lock.data.as_slice())?;
 

@@ -1,8 +1,13 @@
 import { useBackendActor } from "@/backend-actor";
 import { bigintToLEUint8Array } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import * as vetkd from "ic-vetkd-utils";
 import { queryClient } from "@/main";
+import {
+  DerivedPublicKey,
+  IbeCiphertext,
+  IbeIdentity,
+  IbeSeed,
+} from "@dfinity/vetkeys";
 
 type CreateLockArgs = {
   // The message to be encrypted
@@ -29,7 +34,9 @@ export default function useTimeLockCreate() {
         );
         return;
       }
-      const rootPublicKey = rootPublicKeyResult.Ok as Uint8Array;
+      const rootPublicKey = DerivedPublicKey.deserialize(
+        rootPublicKeyResult.Ok as Uint8Array,
+      );
 
       const messageBytes = new TextEncoder().encode(message);
 
@@ -37,13 +44,11 @@ export default function useTimeLockCreate() {
       const timeLockId = BigInt(Date.now()) * 1_000_000n + releaseTimeNanos;
       const timeLockIdBytes = bigintToLEUint8Array(timeLockId, 8);
 
-      const seed = window.crypto.getRandomValues(new Uint8Array(32));
-
-      const encryptedMessage = vetkd.IBECiphertext.encrypt(
+      const encryptedMessage = IbeCiphertext.encrypt(
         rootPublicKey,
-        timeLockIdBytes,
+        IbeIdentity.fromBytes(timeLockIdBytes),
         messageBytes,
-        seed,
+        IbeSeed.random(),
       );
 
       const lockResult = await backend.timelock_create(

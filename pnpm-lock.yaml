@@ -20,6 +20,9 @@ importers:
       '@dfinity/principal':
         specifier: ^2.4.0
         version: 2.4.0
+      '@dfinity/vetkeys':
+        specifier: file:../vetkeys/frontend/ic_vetkeys
+        version: file:../vetkeys/frontend/ic_vetkeys
       '@radix-ui/react-slot':
         specifier: ^1.1.2
         version: 1.1.2(@types/react@19.0.0)(react@19.0.0)
@@ -44,9 +47,6 @@ importers:
       ic-use-actor:
         specifier: ^0.1.0
         version: 0.1.0(@dfinity/agent@2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0))(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(react@19.0.0)
-      ic-vetkd-utils:
-        specifier: file:src/frontend/ic-vetkd-utils-0.1.0.tgz
-        version: file:src/frontend/ic-vetkd-utils-0.1.0.tgz
       lucide-react:
         specifier: ^0.483.0
         version: 0.483.0(react@19.0.0)
@@ -228,6 +228,9 @@ packages:
 
   '@dfinity/principal@2.4.0':
     resolution: {integrity: sha512-gBKCyxrPYKdqHVk/Qh9cfxN0Hnt4BvRYVo5KgNEAOKyoySCIPO39xlcfE6JJzWtLqEftQLMbeSMrLrTHDdMZ5w==}
+
+  '@dfinity/vetkeys@file:../vetkeys/frontend/ic_vetkeys':
+    resolution: {directory: ../vetkeys/frontend/ic_vetkeys, type: directory}
 
   '@esbuild/aix-ppc64@0.25.1':
     resolution: {integrity: sha512-kfYGy8IdzTGy+z0vFGvExZtxkFlA4zAxgKEahG9KE1ScBjpQnFsNOX8KTU5ojNru5ed5CVoJYXFtoxaq5nFbjQ==}
@@ -1472,9 +1475,8 @@ packages:
       '@dfinity/candid': '>=2.1.2'
       react: '>=18.0.0'
 
-  ic-vetkd-utils@file:src/frontend/ic-vetkd-utils-0.1.0.tgz:
-    resolution: {integrity: sha512-3hisUJ9WLFS+7TOrps2BT1cHwTdLumLacN0TdrCLYZqOoMngGP30gSqfUtB7c9wSrz4ZSjpJw34o5i6bn5CyMw==, tarball: file:src/frontend/ic-vetkd-utils-0.1.0.tgz}
-    version: 0.1.0
+  idb-keyval@6.2.2:
+    resolution: {integrity: sha512-yjD9nARJ/jb1g+CvD0tlhUHOrJ9Sy0P8T9MF3YaLlHnSRpwPfpTX0XIvpmw3gAJUmEu3FiICLBDPXVwyEvrleg==}
 
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -2496,6 +2498,13 @@ snapshots:
   '@dfinity/principal@2.4.0':
     dependencies:
       '@noble/hashes': 1.6.1
+
+  '@dfinity/vetkeys@file:../vetkeys/frontend/ic_vetkeys':
+    dependencies:
+      '@dfinity/agent': 2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0)
+      '@dfinity/candid': 2.4.0(@dfinity/principal@2.4.0)
+      '@dfinity/principal': 2.4.0
+      idb-keyval: 6.2.2
 
   '@esbuild/aix-ppc64@0.25.1':
     optional: true
@@ -3864,7 +3873,7 @@ snapshots:
       '@dfinity/candid': 2.4.0(@dfinity/principal@2.4.0)
       react: 19.0.0
 
-  ic-vetkd-utils@file:src/frontend/ic-vetkd-utils-0.1.0.tgz: {}
+  idb-keyval@6.2.2: {}
 
   ieee754@1.2.1: {}
 

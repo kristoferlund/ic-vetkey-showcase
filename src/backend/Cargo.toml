@@ -9,8 +9,9 @@ crate-type = ["cdylib"]
 [dependencies]
 candid = "0.10.12"
 getrandom = { version = "0.2.15", features = ["custom"] }
-ic-cdk = "0.17.1"
-ic-vetkd-utils = { git = "https://github.com/dfinity/ic.git", rev = "14b374b", default-features = false }
+ic-cdk = "0.18.2-alpha.1"
+ic-vetkeys = { git = "https://github.com/dfinity/vetkeys.git", rev = "25c240e" }
+
 serde = "1.0.217"
 serde_json = "1.0.137"
 serde_bytes = "0.11.15"
