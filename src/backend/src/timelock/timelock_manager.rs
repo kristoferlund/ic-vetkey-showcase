@@ -1,11 +1,7 @@
-use crate::vetkey::{
-    create_empty_transport_key, get_root_public_key, system_api_canister_id, vetkd_key_id,
-};
+use crate::vetkey::{create_empty_transport_key, get_root_public_key, vetkd_key_id};
 use candid::CandidType;
-use ic_vetkeys::{
-    vetkd_api_types::{VetKDDeriveKeyReply, VetKDDeriveKeyRequest},
-    DerivedPublicKey, EncryptedVetKey, IBECiphertext,
-};
+use ic_cdk::management_canister::{vetkd_derive_key, VetKDDeriveKeyArgs};
+use ic_vetkeys::{DerivedPublicKey, EncryptedVetKey, IBECiphertext};
 use std::{
     cell::RefCell,
     collections::{
@@ -74,36 +70,28 @@ impl TimeLockManager {
                     let transport_key = create_empty_transport_key();
                     let transport_public_key = transport_key.public_key().to_vec();
 
-                    let args = VetKDDeriveKeyRequest {
+                    let args = VetKDDeriveKeyArgs {
                         input: input.clone(),
                         context: vec![],
                         transport_public_key,
                         key_id: vetkd_key_id(),
                     };
 
-                    let response = ic_cdk::call::Call::unbounded_wait(
-                        system_api_canister_id(),
-                        "vetkd_derive_key",
-                    )
-                    .with_arg(args)
-                    .with_cycles(26_153_846_153)
-                    .await
-                    .unwrap();
+                    let result = vetkd_derive_key(&args)
+                        .await
+                        .map_err(|e| format!("Failed to derive key: {}", e))?;
 
-                    let result = response
-                        .candid::<VetKDDeriveKeyReply>()
-                        .map_err(|e| e.to_string())?;
-
-                    let encrypted_vetkey =
-                        EncryptedVetKey::deserialize(&result.encrypted_key).unwrap();
+                    let encrypted_vetkey = EncryptedVetKey::deserialize(&result.encrypted_key)
+                        .map_err(|_| "Failed to deserialize encrypted vetkey")?;
 
                     let root_public_key = get_root_public_key().await?;
                     let derived_root_public_key =
-                        DerivedPublicKey::deserialize(&root_public_key).unwrap();
+                        DerivedPublicKey::deserialize(&root_public_key)
+                            .map_err(|_| "Failed to deserialize derived root public key.")?;
 
                     let vetkey = encrypted_vetkey
                         .decrypt_and_verify(&transport_key, &derived_root_public_key, &input)
-                        .unwrap();
+                        .map_err(|_| "Failed to decrypt and verify vetkey")?;
 
                     let ibe_ciphertext = IBECiphertext::deserialize(time_lock.data.as_slice())?;
 
