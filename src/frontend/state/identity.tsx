@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
+import { queryClient } from "@/main";
 
 async function createIdentity(username: string) {
   const encoder = new TextEncoder();
@@ -14,7 +15,7 @@ interface IdentityState {
   identity: Ed25519KeyIdentity | undefined;
   username: string | undefined;
   login: (username: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 export const useIdentityStore = create<IdentityState>()(
@@ -26,7 +27,9 @@ export const useIdentityStore = create<IdentityState>()(
         const identity = await createIdentity(username);
         set({ identity, username });
       },
-      logout: () => {
+      logout: async () => {
+        queryClient.clear();
+        await queryClient.invalidateQueries();
         set({ identity: undefined, username: undefined });
       },
     }),

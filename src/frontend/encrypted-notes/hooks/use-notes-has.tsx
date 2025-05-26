@@ -1,7 +1,7 @@
 import { useBackendActor } from "@/backend-actor";
 import { useQuery } from "@tanstack/react-query";
 
-export default function useNotesHas() {
+export function useNotesHas() {
   const { actor: backend } = useBackendActor();
 
   return useQuery({

@@ -1,14 +1,14 @@
 import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
-import useGetUserKey from "./use-get-user-key";
+import { useGetUserKey } from "./use-get-user-key";
 import { DerivedKeyMaterial } from "@dfinity/vetkeys";
 
 type SaveNoteArgs = {
   message: string;
 };
 
-export default function useNotesSave() {
+export function useNotesSave() {
   const { actor: backend } = useBackendActor();
   const { data: vetkeyPrivateKey } = useGetUserKey();
 

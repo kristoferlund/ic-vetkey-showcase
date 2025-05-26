@@ -6,10 +6,13 @@ import {
   TransportSecretKey,
 } from "@dfinity/vetkeys";
 import { useIdentityStore } from "@/state/identity";
+import { useUserKeyStore } from "@/state/user-key";
 
-export default function useGetUserKey() {
+export function useGetUserKey() {
   const { actor: backend } = useBackendActor();
   const identity = useIdentityStore((state) => state.identity);
+  const setUserKey = useUserKeyStore((state) => state.setUserKey);
+  const getUserKey = useUserKeyStore((state) => state.getUserKey);
 
   return useQuery({
     enabled: !!backend && !!identity,
@@ -20,6 +23,11 @@ export default function useGetUserKey() {
       }
       if (!identity) {
         throw new Error("Identity not available");
+      }
+
+      let userKey = getUserKey(identity.getPrincipal().toText());
+      if (userKey) {
+        return userKey;
       }
 
       // The transport key is used to encrypt the user key at time of creation
@@ -49,11 +57,15 @@ export default function useGetUserKey() {
         rootPublicKeyResult.Ok as Uint8Array,
       );
 
-      return encryptedVetKey.decryptAndVerify(
+      userKey = encryptedVetKey.decryptAndVerify(
         transportSecretKey,
         rootPublicKey,
         identity.getPrincipal().toUint8Array(),
       );
+
+      setUserKey(identity.getPrincipal().toString(), userKey);
+
+      return userKey;
     },
   });
 }

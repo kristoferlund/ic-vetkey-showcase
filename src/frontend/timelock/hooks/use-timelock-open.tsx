@@ -2,7 +2,7 @@ import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 
-export default function useTimeLockOpen() {
+export function useTimeLockOpen() {
   const { actor: backend } = useBackendActor();
 
   return useMutation({

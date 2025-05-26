@@ -2,10 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { LoaderCircle, Lock, Unlock, Eye, EyeOff } from "lucide-react";
 import { useBackendActor } from "@/backend-actor";
-import useNotesHas from "../hooks/use-notes-has";
-import useNotesSave from "../hooks/use-notes-save";
-import useNotesDecrypt from "../hooks/use-notes-decrypt";
-import { useState } from "react";
+import { useNotesHas } from "../hooks/use-notes-has";
+import { useNotesSave } from "../hooks/use-notes-save";
+import { useNotesDecrypt } from "../hooks/use-notes-decrypt";
+import { useEffect, useState } from "react";
+import { useIdentityStore } from "@/state/identity";
 
 export default function EncryptedNotesCard() {
   const { actor: backend } = useBackendActor();
@@ -13,11 +14,19 @@ export default function EncryptedNotesCard() {
   const { mutateAsync: saveNote, isPending: isSaving } = useNotesSave();
   const { mutateAsync: decryptNote, isPending: isDecrypting } =
     useNotesDecrypt();
+  const identity = useIdentityStore((state) => state.identity);
 
   const [noteText, setNoteText] = useState("");
   const [decryptedNote, setDecryptedNote] = useState<string | null>(null);
   const [showDecrypted, setShowDecrypted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setNoteText("");
+    setDecryptedNote(null);
+    setShowDecrypted(false);
+    setError(null);
+  }, [identity]);
 
   const handleSaveNote = async () => {
     try {
@@ -52,7 +61,7 @@ export default function EncryptedNotesCard() {
     }
   };
 
-  const disabled = !backend || hasNoteLoading;
+  const disabled = !backend || hasNoteLoading || !identity;
 
   return (
     <div className="w-full flex flex-col text-lg text-white gap-5 border p-5 bg-white/10 rounded-2xl">
@@ -72,7 +81,7 @@ export default function EncryptedNotesCard() {
         </div>
       )}
 
-      {hasNote ? (
+      {hasNote && !disabled ? (
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <span className="text-green-400 flex items-center gap-2">
@@ -83,7 +92,7 @@ export default function EncryptedNotesCard() {
               onClick={toggleShowDecrypted}
               variant="outline"
               size="sm"
-              disabled={disabled || isDecrypting}
+              disabled={isDecrypting}
               className="flex items-center gap-2"
             >
               {isDecrypting ? (
@@ -130,7 +139,7 @@ export default function EncryptedNotesCard() {
                 placeholder="Enter your new note here (max 512 characters)..."
                 className="w-full text-white text-lg min-h-32 resize-none"
                 maxLength={512}
-                disabled={disabled || isSaving}
+                disabled={isSaving}
               />
               <div className="flex justify-between items-center">
                 <span className="text-sm opacity-60">
@@ -138,7 +147,7 @@ export default function EncryptedNotesCard() {
                 </span>
                 <Button
                   onClick={() => void handleSaveNote()}
-                  disabled={disabled || isSaving || !noteText.trim()}
+                  disabled={isSaving || !noteText.trim()}
                   className="flex items-center gap-2 text-lg"
                   size={"lg"}
                 >

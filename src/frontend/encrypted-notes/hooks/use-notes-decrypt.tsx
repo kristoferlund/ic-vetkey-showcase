@@ -1,9 +1,9 @@
 import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
-import useGetUserKey from "./use-get-user-key";
+import { useGetUserKey } from "./use-get-user-key";
 import { DerivedKeyMaterial } from "@dfinity/vetkeys";
 
-export default function useNotesDecrypt() {
+export function useNotesDecrypt() {
   const { actor: backend } = useBackendActor();
   const { data: vetkeyPrivateKey } = useGetUserKey();
 

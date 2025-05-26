@@ -16,7 +16,7 @@ type CreateLockArgs = {
   releaseTimeSeconds: number;
 };
 
-export default function useTimeLockCreate() {
+export function useTimeLockCreate() {
   const { actor: backend } = useBackendActor();
 
   return useMutation({

@@ -1,5 +1,5 @@
-import useTimeLockList from "@/timelock/hooks/use-timelock-list";
-import useTimeLockOpen from "@/timelock/hooks/use-timelock-open";
+import { useTimeLockList } from "@/timelock/hooks/use-timelock-list";
+import { useTimeLockOpen } from "@/timelock/hooks/use-timelock-open";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle, Lock, LockOpen } from "lucide-react";
 import { useEffect, useState } from "react";

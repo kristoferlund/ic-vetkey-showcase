@@ -6,7 +6,7 @@ type TimeLockExtended = TimeLock & {
   date: Date;
 };
 
-export default function useTimeLockList() {
+export function useTimeLockList() {
   return useQuery({
     queryKey: ["timelock_list"],
     queryFn: async (): Promise<TimeLockExtended[]> => {
