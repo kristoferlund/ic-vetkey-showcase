@@ -23,9 +23,6 @@ importers:
       '@dfinity/vetkeys':
         specifier: file:../vetkeys/frontend/ic_vetkeys
         version: file:../vetkeys/frontend/ic_vetkeys
-      '@noble/curves':
-        specifier: ^1.9.1
-        version: 1.9.1
       '@radix-ui/react-slot':
         specifier: ^1.1.2
         version: 1.1.2(@types/react@19.0.0)(react@19.0.0)
