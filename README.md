@@ -2,6 +2,8 @@
 
 A demonstration application showcasing the capabilities of **VetKeys** (Verifiable Encrypted Threshold Keys) on the Internet Computer. VetKeys addresses the fundamental challenge of storing secrets on-chain by allowing cryptographic key derivation without exposing private keys.
 
+![VetKeys](./media/vetkey-video.gif)
+
 ## Overview
 
 This showcase demonstrates three distinct use cases for VetKeys, each highlighting different aspects of the technology:
