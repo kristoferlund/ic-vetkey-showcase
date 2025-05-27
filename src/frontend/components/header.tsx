@@ -1,10 +1,13 @@
 import { useIdentityStore } from "@/state/identity";
 import { Button } from "@/components/ui/button";
+import { useGetUserKey } from "@/hooks/use-get-user-key";
 
 export default function Header() {
   const identity = useIdentityStore((state) => state.identity);
   const username = useIdentityStore((state) => state.username);
   const logout = useIdentityStore((state) => state.logout);
+
+  useGetUserKey(); // Hack to ensure user key is always available
 
   if (!identity) return null;
 
@@ -15,7 +18,7 @@ export default function Header() {
         <span className="px-3 py-1 bg-[#9a0063]/50 rounded-full text-sm">
           {username}
         </span>
-        <Button variant="outline" size="sm" onClick={logout}>
+        <Button variant="outline" size="sm" onClick={() => void logout()}>
           Logout
         </Button>
       </div>
