@@ -8,14 +8,34 @@ export interface EncryptedNote {
   'data' : Uint8Array | number[],
   'created_at' : bigint,
 }
+export interface ReceivedMessage {
+  'id' : bigint,
+  'encrypted_data' : Uint8Array | number[],
+  'recipient' : string,
+  'sender' : string,
+  'timestamp' : bigint,
+}
 export type Result = { 'Ok' : Uint8Array | number[] } |
   { 'Err' : string };
-export type Result_1 = { 'Ok' : boolean } |
+export type Result_1 = { 'Ok' : Array<ReceivedMessage> } |
   { 'Err' : string };
-export type Result_2 = { 'Ok' : EncryptedNote } |
+export type Result_2 = { 'Ok' : Array<SentMessage> } |
   { 'Err' : string };
-export type Result_3 = { 'Ok' : TimeLock } |
+export type Result_3 = { 'Ok' : bigint } |
   { 'Err' : string };
+export type Result_4 = { 'Ok' : boolean } |
+  { 'Err' : string };
+export type Result_5 = { 'Ok' : EncryptedNote } |
+  { 'Err' : string };
+export type Result_6 = { 'Ok' : TimeLock } |
+  { 'Err' : string };
+export interface SentMessage {
+  'id' : bigint,
+  'encrypted_data' : Uint8Array | number[],
+  'recipient' : string,
+  'sender' : string,
+  'timestamp' : bigint,
+}
 export interface TimeLock {
   'data' : Uint8Array | number[],
   'locked' : boolean,
@@ -24,13 +44,19 @@ export interface TimeLock {
 export interface _SERVICE {
   'get_root_public_key' : ActorMethod<[], Result>,
   'get_user_key' : ActorMethod<[Uint8Array | number[], string], Result>,
-  'notes_delete' : ActorMethod<[], Result_1>,
-  'notes_get' : ActorMethod<[], Result_2>,
-  'notes_has' : ActorMethod<[], Result_1>,
-  'notes_save' : ActorMethod<[Uint8Array | number[]], Result_2>,
-  'timelock_create' : ActorMethod<[bigint, Uint8Array | number[]], Result_3>,
+  'message_list_received' : ActorMethod<[string], Result_1>,
+  'message_list_sent' : ActorMethod<[string], Result_2>,
+  'message_send' : ActorMethod<
+    [string, string, Uint8Array | number[], Uint8Array | number[]],
+    Result_3
+  >,
+  'notes_delete' : ActorMethod<[], Result_4>,
+  'notes_get' : ActorMethod<[], Result_5>,
+  'notes_has' : ActorMethod<[], Result_4>,
+  'notes_save' : ActorMethod<[Uint8Array | number[]], Result_5>,
+  'timelock_create' : ActorMethod<[bigint, Uint8Array | number[]], Result_6>,
   'timelock_list' : ActorMethod<[], Array<TimeLock>>,
-  'timelock_open' : ActorMethod<[bigint], Result_3>,
+  'timelock_open' : ActorMethod<[bigint], Result_6>,
 }
 export declare const idlFactory: IDL.InterfaceFactory;
 export declare const init: (args: { IDL: typeof IDL }) => IDL.Type[];

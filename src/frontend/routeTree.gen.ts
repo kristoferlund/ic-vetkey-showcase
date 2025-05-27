@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TimelockImport } from './routes/timelock'
+import { Route as MessageImport } from './routes/message'
 import { Route as EncryptedNotesImport } from './routes/encrypted-notes'
 import { Route as IndexImport } from './routes/index'
 
@@ -20,6 +21,12 @@ import { Route as IndexImport } from './routes/index'
 const TimelockRoute = TimelockImport.update({
   id: '/timelock',
   path: '/timelock',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MessageRoute = MessageImport.update({
+  id: '/message',
+  path: '/message',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,6 +60,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EncryptedNotesImport
       parentRoute: typeof rootRoute
     }
+    '/message': {
+      id: '/message'
+      path: '/message'
+      fullPath: '/message'
+      preLoaderRoute: typeof MessageImport
+      parentRoute: typeof rootRoute
+    }
     '/timelock': {
       id: '/timelock'
       path: '/timelock'
@@ -68,12 +82,14 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/encrypted-notes': typeof EncryptedNotesRoute
+  '/message': typeof MessageRoute
   '/timelock': typeof TimelockRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/encrypted-notes': typeof EncryptedNotesRoute
+  '/message': typeof MessageRoute
   '/timelock': typeof TimelockRoute
 }
 
@@ -81,27 +97,30 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/encrypted-notes': typeof EncryptedNotesRoute
+  '/message': typeof MessageRoute
   '/timelock': typeof TimelockRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/encrypted-notes' | '/timelock'
+  fullPaths: '/' | '/encrypted-notes' | '/message' | '/timelock'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/encrypted-notes' | '/timelock'
-  id: '__root__' | '/' | '/encrypted-notes' | '/timelock'
+  to: '/' | '/encrypted-notes' | '/message' | '/timelock'
+  id: '__root__' | '/' | '/encrypted-notes' | '/message' | '/timelock'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   EncryptedNotesRoute: typeof EncryptedNotesRoute
+  MessageRoute: typeof MessageRoute
   TimelockRoute: typeof TimelockRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   EncryptedNotesRoute: EncryptedNotesRoute,
+  MessageRoute: MessageRoute,
   TimelockRoute: TimelockRoute,
 }
 
@@ -117,6 +136,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/encrypted-notes",
+        "/message",
         "/timelock"
       ]
     },
@@ -125,6 +145,9 @@ export const routeTree = rootRoute
     },
     "/encrypted-notes": {
       "filePath": "encrypted-notes.tsx"
+    },
+    "/message": {
+      "filePath": "message.tsx"
     },
     "/timelock": {
       "filePath": "timelock.tsx"

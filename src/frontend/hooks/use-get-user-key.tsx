@@ -13,21 +13,23 @@ export function useGetUserKey() {
   const setUserKey = useUserKeyStore((state) => state.setUserKey);
   const getUserKey = useUserKeyStore((state) => state.getUserKey);
 
+  const principal = identity?.getPrincipal().toText();
+
   return useQuery({
     enabled: !!backend && !!identity,
-    queryKey: ["get_user_key", identity?.getPrincipal().toText()],
+    queryKey: ["get_user_key", principal],
     queryFn: async () => {
       if (!backend) {
         throw new Error("Backend actor not available");
       }
-      if (!identity || !username) {
+      if (!identity || !username || !principal) {
         throw new Error("Identity not available");
       }
       if (!rootPublicKey) {
         throw new Error("Root public key not available");
       }
 
-      let userKey = getUserKey(identity.getPrincipal().toText());
+      let userKey = getUserKey(principal);
       if (userKey) {
         return userKey;
       }
@@ -51,10 +53,10 @@ export function useGetUserKey() {
       userKey = encryptedVetKey.decryptAndVerify(
         transportSecretKey,
         rootPublicKey,
-        identity.getPrincipal().toUint8Array(),
+        new TextEncoder().encode(username),
       );
 
-      setUserKey(identity.getPrincipal().toString(), userKey);
+      setUserKey(principal, userKey);
 
       return userKey;
     },

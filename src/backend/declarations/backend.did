@@ -4,19 +4,39 @@ type EncryptedNote = record {
   data : blob;
   created_at : nat64;
 };
+type ReceivedMessage = record {
+  id : nat64;
+  encrypted_data : blob;
+  recipient : text;
+  sender : text;
+  timestamp : nat64;
+};
 type Result = variant { Ok : blob; Err : text };
-type Result_1 = variant { Ok : bool; Err : text };
-type Result_2 = variant { Ok : EncryptedNote; Err : text };
-type Result_3 = variant { Ok : TimeLock; Err : text };
+type Result_1 = variant { Ok : vec ReceivedMessage; Err : text };
+type Result_2 = variant { Ok : vec SentMessage; Err : text };
+type Result_3 = variant { Ok : nat64; Err : text };
+type Result_4 = variant { Ok : bool; Err : text };
+type Result_5 = variant { Ok : EncryptedNote; Err : text };
+type Result_6 = variant { Ok : TimeLock; Err : text };
+type SentMessage = record {
+  id : nat64;
+  encrypted_data : blob;
+  recipient : text;
+  sender : text;
+  timestamp : nat64;
+};
 type TimeLock = record { data : blob; locked : bool; timelock_id : nat64 };
 service : {
   get_root_public_key : () -> (Result);
   get_user_key : (blob, text) -> (Result);
-  notes_delete : () -> (Result_1);
-  notes_get : () -> (Result_2) query;
-  notes_has : () -> (Result_1) query;
-  notes_save : (blob) -> (Result_2);
-  timelock_create : (nat64, blob) -> (Result_3);
+  message_list_received : (text) -> (Result_1) query;
+  message_list_sent : (text) -> (Result_2) query;
+  message_send : (text, text, blob, blob) -> (Result_3);
+  notes_delete : () -> (Result_4);
+  notes_get : () -> (Result_5) query;
+  notes_has : () -> (Result_4) query;
+  notes_save : (blob) -> (Result_5);
+  timelock_create : (nat64, blob) -> (Result_6);
   timelock_list : () -> (vec TimeLock) query;
-  timelock_open : (nat64) -> (Result_3);
+  timelock_open : (nat64) -> (Result_6);
 }

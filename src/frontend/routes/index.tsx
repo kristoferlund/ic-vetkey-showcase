@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
-import { Timer, Lock } from "lucide-react";
+import { Timer, Lock, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -30,9 +30,20 @@ function Index() {
         <div className="flex items-center gap-4 border p-5 rounded-md bg-white/10 hover:bg-white/20">
           <Lock className="w-12 h-12 flex-shrink-0" />
           <div className="flex flex-col gap-1">
-            <h2>Encrypted Note</h2>
+            <h2>Encrypted Notes</h2>
             <div className="text-sm text-gray-400">
-              Store a secure note that only you can decrypt
+              Store secure notes that only you can decrypt
+            </div>
+          </div>
+        </div>
+      </Link>
+      <Link to="/message">
+        <div className="flex items-center gap-4 border p-5 rounded-md bg-white/10 hover:bg-white/20">
+          <Mail className="w-12 h-12 flex-shrink-0" />
+          <div className="flex flex-col gap-1">
+            <h2>Messages</h2>
+            <div className="text-sm text-gray-400">
+              Send encrypted messages to other users
             </div>
           </div>
         </div>
