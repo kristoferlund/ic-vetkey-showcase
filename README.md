@@ -34,6 +34,10 @@ Access the deployed application: [https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io](h
 
 ## Local Development
 
+Fork or clone the repository or:
+
+[![Open locally in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/kristoferlund/ic-vetkey-showcase)
+
 1. **Install dependencies:**
    ```bash
    pnpm install

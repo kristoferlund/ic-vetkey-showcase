@@ -1,5 +1,5 @@
 {
-  "name": "ic-vite-react-next",
+  "name": "ic-vetkey-showcase",
   "build": {
     "dockerfile": "Dockerfile"
   },
