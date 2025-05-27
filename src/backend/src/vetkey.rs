@@ -1,18 +1,15 @@
-use ic_cdk::management_canister::{vetkd_public_key, VetKDCurve, VetKDKeyId, VetKDPublicKeyArgs};
 use ic_vetkeys::TransportSecretKey;
+use serde_bytes::ByteBuf;
 use std::cell::RefCell;
 
-pub static VETKEY_PUBLIC_KEY_NAME: &str = "dfx_test_key";
+use crate::chainkey_testing_canister::{
+    VetkdCurve, VetkdPublicKeyArgs, VetkdPublicKeyArgsKeyId, CHAINKEY_TESTING_CANISTER,
+};
+
+pub static VETKEY_PUBLIC_KEY_NAME: &str = "insecure_test_key_1";
 
 thread_local! {
     static CANISTER_PUBLIC_KEY: RefCell<Option<Vec<u8>>> = const { RefCell::new(None) };
-}
-
-pub fn vetkd_key_id() -> VetKDKeyId {
-    VetKDKeyId {
-        curve: VetKDCurve::Bls12_381_G2,
-        name: VETKEY_PUBLIC_KEY_NAME.to_string(),
-    }
 }
 
 pub fn create_empty_transport_key() -> TransportSecretKey {
@@ -27,21 +24,24 @@ pub async fn get_root_public_key() -> Result<Vec<u8>, String> {
         return Ok(public_key);
     };
 
-    let args = VetKDPublicKeyArgs {
-        key_id: vetkd_key_id(),
-        context: vec![],
+    let args = VetkdPublicKeyArgs {
+        key_id: VetkdPublicKeyArgsKeyId {
+            name: VETKEY_PUBLIC_KEY_NAME.to_string(),
+            curve: VetkdCurve::Bls12381G2,
+        },
+        context: ByteBuf::new(),
         canister_id: None,
     };
 
-    let result = vetkd_public_key(&args)
+    let public_key = CHAINKEY_TESTING_CANISTER
+        .vetkd_public_key(args)
         .await
-        .map_err(|_| "Failed to retrieve root public key")?;
-
-    let public_key = result.public_key;
+        .map(|(res,)| res.public_key)
+        .map_err(|(code, msg)| format!("{}, code: {:?}", msg, code))?;
 
     CANISTER_PUBLIC_KEY.with_borrow_mut(|canister_public_key| {
-        *canister_public_key = Some(public_key.clone());
+        *canister_public_key = Some(public_key.clone().into_vec());
     });
 
-    Ok(public_key)
+    Ok(public_key.into_vec())
 }

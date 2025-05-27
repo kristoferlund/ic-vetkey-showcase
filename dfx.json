@@ -15,6 +15,17 @@
       "declarations": {
         "output": "src/frontend/declarations"
       }
+    },
+    "chainkey_testing_canister": {
+      "type": "custom",
+      "candid": "src/chainkey_testing_canister/chainkey_testing_canister.did",
+      "wasm": "src/chainkey_testing_canister/chainkey_testing_canister.wasm.gz",
+      "specified_id": "vrqyr-saaaa-aaaan-qzn4q-cai",
+      "remote": {
+        "id": {
+          "ic": "vrqyr-saaaa-aaaan-qzn4q-cai"
+        }
+      }
     }
   },
   "defaults": {

@@ -1,8 +1,11 @@
-use crate::vetkey::vetkd_key_id;
-use ic_cdk::{
-    management_canister::{vetkd_derive_key, VetKDDeriveKeyArgs},
-    update,
+use crate::{
+    chainkey_testing_canister::{
+        VetkdCurve, VetkdDeriveKeyArgs, VetkdDeriveKeyArgsKeyId, CHAINKEY_TESTING_CANISTER,
+    },
+    vetkey::VETKEY_PUBLIC_KEY_NAME,
 };
+use ic_cdk::update;
+use serde_bytes::ByteBuf;
 
 // This function derives the encrypted VetKey for a given user. The VetKey is encrypted
 // at creation time using the user's transport public key.
@@ -20,16 +23,21 @@ pub async fn get_user_key(
 ) -> Result<Vec<u8>, String> {
     let input = username.as_bytes().to_vec();
 
-    let args = VetKDDeriveKeyArgs {
-        input,
-        context: vec![],
-        transport_public_key,
-        key_id: vetkd_key_id(),
+    let args = VetkdDeriveKeyArgs {
+        input: ByteBuf::from(input),
+        context: ByteBuf::new(),
+        transport_public_key: ByteBuf::from(transport_public_key),
+        key_id: VetkdDeriveKeyArgsKeyId {
+            name: VETKEY_PUBLIC_KEY_NAME.to_string(),
+            curve: VetkdCurve::Bls12381G2,
+        },
     };
 
-    let result = vetkd_derive_key(&args)
+    let encrypted_key = CHAINKEY_TESTING_CANISTER
+        .vetkd_derive_key(args)
         .await
-        .map_err(|_| "Failed to derive key")?;
+        .map(|(res,)| res.encrypted_key)
+        .map_err(|(code, msg)| format!("{}, code: {:?}", msg, code))?;
 
-    Ok(result.encrypted_key)
+    Ok(encrypted_key.into_vec())
 }
