@@ -4,7 +4,7 @@ import Header from "@/components/header";
 import LoginCard from "@/components/login-card";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import icLogo from "../assets/ic.svg";
-import HomeButtonCard from "@/components/home-button-card";
+import NavButtons from "@/components/nav-buttons";
 
 export const Route = createRootRoute({
   component: () => (
@@ -16,7 +16,7 @@ export const Route = createRootRoute({
             <img src={icLogo} alt="ICP logo" className="h-20" />
           </Link>
           <h1 className="text-xl font-semibold">VetKeys Showcase</h1>
-          <HomeButtonCard />
+          <NavButtons />
           <LoginCard />
         </div>
 

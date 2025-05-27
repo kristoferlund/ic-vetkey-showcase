@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { LoaderCircle, Lock, Unlock, Eye, EyeOff } from "lucide-react";
+import {
+  LoaderCircle,
+  Lock,
+  Unlock,
+  Eye,
+  EyeOff,
+  FileText,
+} from "lucide-react";
 import { useBackendActor } from "@/backend-actor";
 import { useNotesHas } from "../hooks/use-notes-has";
 import { useNotesSave } from "../hooks/use-notes-save";
@@ -66,7 +73,7 @@ export default function EncryptedNotesCard() {
   return (
     <div className="w-full flex flex-col text-lg text-white gap-5 border p-5 bg-white/10 rounded-2xl">
       <div className="flex items-center gap-2">
-        <Lock className="w-6 h-6" />
+        <FileText className="w-6 h-6" />
         <h2>Encrypted Note</h2>
       </div>
 
