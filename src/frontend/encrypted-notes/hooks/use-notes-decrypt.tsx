@@ -1,18 +1,18 @@
 import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
-import { useGetUserKey } from "./use-get-user-key";
+import { useGetUserKey } from "@/hooks/use-get-user-key";
 import { DerivedKeyMaterial } from "@dfinity/vetkeys";
 
 export function useNotesDecrypt() {
   const { actor: backend } = useBackendActor();
-  const { data: vetkeyPrivateKey } = useGetUserKey();
+  const { data: userKey } = useGetUserKey();
 
   return useMutation({
     mutationFn: async () => {
       if (!backend) {
         throw new Error("Backend actor not available");
       }
-      if (!vetkeyPrivateKey) {
+      if (!userKey) {
         throw new Error("Private key not available");
       }
 
@@ -24,9 +24,7 @@ export function useNotesDecrypt() {
       const encryptedNote = noteResult.Ok;
 
       // Use the private key to decrypt the note
-      const dkm = await DerivedKeyMaterial.setup(
-        vetkeyPrivateKey.signatureBytes(),
-      );
+      const dkm = await DerivedKeyMaterial.setup(userKey.signatureBytes());
       const decryptedMessage = await dkm.decryptMessage(
         encryptedNote.data as Uint8Array,
         "",

@@ -1,8 +1,8 @@
 import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/main";
-import { useGetUserKey } from "./use-get-user-key";
+import { useGetUserKey } from "@/hooks/use-get-user-key";
 import { DerivedKeyMaterial } from "@dfinity/vetkeys";
+import { queryClient } from "@/main";
 
 type SaveNoteArgs = {
   message: string;
@@ -10,24 +10,22 @@ type SaveNoteArgs = {
 
 export function useNotesSave() {
   const { actor: backend } = useBackendActor();
-  const { data: vetkeyPrivateKey } = useGetUserKey();
+  const { data: userKey } = useGetUserKey();
 
   return useMutation({
     mutationFn: async ({ message }: SaveNoteArgs) => {
       if (!backend) {
         throw new Error("Backend actor not available");
       }
-      if (!vetkeyPrivateKey) {
-        throw new Error("Private key not available");
+      if (!userKey) {
+        throw new Error("User key not available");
       }
 
       if (message.length > 512) {
         throw new Error("Note cannot exceed 512 characters");
       }
 
-      const dmk = await DerivedKeyMaterial.setup(
-        vetkeyPrivateKey.signatureBytes(),
-      );
+      const dmk = await DerivedKeyMaterial.setup(userKey.signatureBytes());
 
       const encryptedMessage = await dmk.encryptMessage(message, "");
 

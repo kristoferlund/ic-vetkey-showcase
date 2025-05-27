@@ -8,15 +8,13 @@ export function useTimeLockOpen() {
   return useMutation({
     mutationFn: async ({ lock_id }: { lock_id: bigint }) => {
       if (!backend) {
-        console.error("Backend actor not available");
-        return;
+        throw new Error("Backend actor not available");
       }
 
       const result = await backend.timelock_open(lock_id);
 
       if ("Err" in result) {
-        console.error("Error unlocking lock:", result.Err);
-        return;
+        throw new Error(`Error unlocking lock: ${result.Err}`);
       }
 
       await queryClient.invalidateQueries({

@@ -16,7 +16,7 @@ export const idlFactory = ({ IDL }) => {
   const Result_3 = IDL.Variant({ 'Ok' : TimeLock, 'Err' : IDL.Text });
   return IDL.Service({
     'get_root_public_key' : IDL.Func([], [Result], []),
-    'get_user_key' : IDL.Func([IDL.Vec(IDL.Nat8)], [Result], []),
+    'get_user_key' : IDL.Func([IDL.Vec(IDL.Nat8), IDL.Text], [Result], []),
     'notes_delete' : IDL.Func([], [Result_1], []),
     'notes_get' : IDL.Func([], [Result_2], ['query']),
     'notes_has' : IDL.Func([], [Result_1], ['query']),

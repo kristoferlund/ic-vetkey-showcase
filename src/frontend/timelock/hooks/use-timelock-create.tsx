@@ -2,12 +2,8 @@ import { useBackendActor } from "@/backend-actor";
 import { bigintToLEUint8Array } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
-import {
-  DerivedPublicKey,
-  IbeCiphertext,
-  IbeIdentity,
-  IbeSeed,
-} from "@dfinity/vetkeys";
+import { IbeCiphertext, IbeIdentity, IbeSeed } from "@dfinity/vetkeys";
+import { useGetRootPublicKey } from "@/hooks/use-get-root-public-key";
 
 type CreateLockArgs = {
   // The message to be encrypted
@@ -18,25 +14,16 @@ type CreateLockArgs = {
 
 export function useTimeLockCreate() {
   const { actor: backend } = useBackendActor();
+  const { data: rootPublicKey } = useGetRootPublicKey();
 
   return useMutation({
     mutationFn: async ({ message, releaseTimeSeconds }: CreateLockArgs) => {
       if (!backend) {
-        console.error("Backend actor not available");
-        return;
+        throw new Error("Backend actor not available");
       }
-
-      const rootPublicKeyResult = await backend.get_root_public_key();
-      if ("Err" in rootPublicKeyResult) {
-        console.error(
-          "Error getting root vetket public key",
-          rootPublicKeyResult.Err,
-        );
-        return;
+      if (!rootPublicKey) {
+        throw new Error("Root public key not available");
       }
-      const rootPublicKey = DerivedPublicKey.deserialize(
-        rootPublicKeyResult.Ok as Uint8Array,
-      );
 
       const messageBytes = new TextEncoder().encode(message);
 
@@ -57,8 +44,7 @@ export function useTimeLockCreate() {
       );
 
       if ("Err" in lockResult) {
-        console.error("Error creating lock", lockResult.Err);
-        return;
+        throw new Error(`Error creating lock: ${lockResult.Err}`);
       }
 
       await queryClient.invalidateQueries({

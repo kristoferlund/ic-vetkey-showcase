@@ -4,8 +4,15 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 
-// Create a new Tanstack Query client instance
-export const queryClient = new QueryClient();
+// Create a new Tanstack Query client instance. Query results are cached indefinitely.
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      gcTime: Infinity,
+    },
+  },
+});
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";

@@ -23,7 +23,7 @@ export interface TimeLock {
 }
 export interface _SERVICE {
   'get_root_public_key' : ActorMethod<[], Result>,
-  'get_user_key' : ActorMethod<[Uint8Array | number[]], Result>,
+  'get_user_key' : ActorMethod<[Uint8Array | number[], string], Result>,
   'notes_delete' : ActorMethod<[], Result_1>,
   'notes_get' : ActorMethod<[], Result_2>,
   'notes_has' : ActorMethod<[], Result_1>,
