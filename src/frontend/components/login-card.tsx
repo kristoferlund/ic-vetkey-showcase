@@ -1,14 +1,29 @@
+import { useGetUserKey } from "@/hooks/use-get-user-key";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useIdentityStore } from "@/state/identity";
+import { LoaderCircle } from "lucide-react";
 
 export default function LoginCard() {
   const identity = useIdentityStore((state) => state.identity);
   const login = useIdentityStore((state) => state.login);
 
+  const { isPending: userKeyPending } = useGetUserKey();
+
   const doLogin = async (formData: FormData) => {
     await login(formData.get("username") as string);
   };
+
+  if (identity && userKeyPending) {
+    return (
+      <div className="flex flex-col bg-[#9a0063]/50 p-5 rounded-xl text-lg text-white gap-5 w-full">
+        <div className="flex items-center justify-center gap-3">
+          <LoaderCircle className="animate-spin" />
+          <h2>Logging in...</h2>
+        </div>
+      </div>
+    );
+  }
 
   if (identity) {
     return null;

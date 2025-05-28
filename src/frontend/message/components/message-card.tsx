@@ -18,6 +18,7 @@ import { useMessageDecryptReceived } from "../hooks/use-message-decrypt-received
 import { useMessageDecryptSent } from "../hooks/use-message-decrypt-sent";
 import { useState } from "react";
 import { useIdentityStore } from "@/state/identity";
+import { useGetUserKey } from "@/hooks/use-get-user-key";
 
 type TabType = "inbox" | "outbox" | "compose";
 
@@ -32,6 +33,7 @@ export default function MessageCard() {
   const { mutateAsync: decryptSent, isPending: isDecryptingSent } =
     useMessageDecryptSent();
   const identity = useIdentityStore((state) => state.identity);
+  const { isPending: userKeyPending } = useGetUserKey();
 
   const [activeTab, setActiveTab] = useState<TabType>("inbox");
   const [messageText, setMessageText] = useState("");
@@ -113,7 +115,7 @@ export default function MessageCard() {
     return date.toLocaleString();
   };
 
-  const disabled = !backend || !identity;
+  const disabled = !backend || !identity || userKeyPending;
 
   return (
     <div className="w-full flex flex-col text-lg text-white gap-5 border p-5 bg-white/10 rounded-2xl">
