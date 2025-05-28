@@ -9,16 +9,19 @@ A demonstration application showcasing the capabilities of **VetKeys** (Verifiab
 This showcase demonstrates three distinct use cases for VetKeys, each highlighting different aspects of the technology:
 
 ### 1. TimeLock
+
 Uses identity-based encryption (IBE) with timestamps as identities. Messages are encrypted with a future timestamp, and the canister can derive the decryption key only after that time has passed. This allows for time-delayed decryption where data becomes publicly accessible at a predetermined time.
 
 **Key Feature**: Canister-side decryption is acceptable here since the data is intended to become publicly accessible after the time lock expires.
 
 ### 2. Encrypted Notes
+
 Demonstrates personal key derivation using VetKeys. Users derive their own cryptographic keys, which are encrypted and transported securely to the frontend for local encryption/decryption. The canister stores only encrypted data and never has access to plaintext content.
 
 **Key Feature**: All encryption and decryption happens client-side, ensuring maximum privacy.
 
 ### 3. Messages
+
 Implements identity-based encryption for user-to-user messaging. Senders encrypt messages using the recipient's username as the IBE identity. Recipients derive their personal VetKeys in the frontend to decrypt received messages.
 
 **Key Feature**: Enables secure messaging without requiring prior key exchange between users.
@@ -26,6 +29,11 @@ Implements identity-based encryption for user-to-user messaging. Senders encrypt
 ## Live Demo
 
 Access the deployed application: [https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io](https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io/)
+
+> [!IMPORTANT]  
+> This is a demonstration application. It is not intended for production use and should not be used to store sensitive
+> information. This being a demo app also means that the code is not optimised for security and performance. Most canister
+> endpoints are public and can be called by anyone.
 
 ## Prerequisites
 
@@ -39,16 +47,19 @@ Fork or clone the repository or:
 [![Open locally in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/kristoferlund/ic-vetkey-showcase)
 
 1. **Install dependencies:**
+
    ```bash
    pnpm install
    ```
 
 2. **Start the local Internet Computer replica:**
+
    ```bash
    dfx start --clean --background
    ```
 
 3. **Deploy the canisters:**
+
    ```bash
    dfx deploy
    ```
