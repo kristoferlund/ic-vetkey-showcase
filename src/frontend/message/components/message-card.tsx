@@ -368,9 +368,6 @@ export default function MessageCard() {
               disabled={disabled || isSending}
             />
             <div className="flex justify-between items-center">
-              <span className="text-sm opacity-60">
-                {messageText.length} characters
-              </span>
               <Button
                 onClick={() => {
                   void handleSendMessage();
@@ -381,7 +378,7 @@ export default function MessageCard() {
                   !messageText.trim() ||
                   !recipient.trim()
                 }
-                className="flex items-center gap-2 text-lg"
+                className="flex items-center gap-2 text-lg w-full"
                 size="lg"
               >
                 {isSending ? (
@@ -390,7 +387,7 @@ export default function MessageCard() {
                     Sending...
                   </>
                 ) : (
-                  <>Send Message</>
+                  <>Encrypt and send</>
                 )}
               </Button>
             </div>
