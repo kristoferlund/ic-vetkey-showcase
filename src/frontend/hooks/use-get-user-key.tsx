@@ -16,8 +16,8 @@ export function useGetUserKey() {
   const principal = identity?.getPrincipal().toText();
 
   return useQuery({
-    enabled: !!backend && !!identity,
     queryKey: ["get_user_key", principal],
+    enabled: !!backend && !!identity,
     queryFn: async () => {
       if (!backend) {
         throw new Error("Backend actor not available");

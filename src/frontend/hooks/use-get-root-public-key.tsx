@@ -7,6 +7,7 @@ export function useGetRootPublicKey() {
 
   return useQuery({
     queryKey: ["get_root_public_key"],
+    enabled: !!backend,
     queryFn: async () => {
       if (!backend) {
         throw new Error("Backend actor not available");

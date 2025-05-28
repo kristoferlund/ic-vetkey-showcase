@@ -1,13 +1,10 @@
 import { useIdentityStore } from "@/state/identity";
 import { Button } from "@/components/ui/button";
-import { useGetUserKey } from "@/hooks/use-get-user-key";
 
 export default function Header() {
   const identity = useIdentityStore((state) => state.identity);
   const username = useIdentityStore((state) => state.username);
   const logout = useIdentityStore((state) => state.logout);
-
-  useGetUserKey(); // Hack to ensure user key is always available
 
   if (!identity) return null;
 
