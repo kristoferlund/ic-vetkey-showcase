@@ -19,7 +19,7 @@ export default function LoginCard() {
       <div className="flex flex-col bg-[#9a0063]/50 p-5 rounded-xl text-lg text-white gap-5 w-full">
         <div className="flex items-center justify-center gap-3">
           <LoaderCircle className="animate-spin" />
-          <h2>Logging in...</h2>
+          <h2>Getting user VetKey...</h2>
         </div>
       </div>
     );
