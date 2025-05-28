@@ -21,8 +21,8 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0
       '@dfinity/vetkeys':
-        specifier: file:../vetkeys/frontend/ic_vetkeys
-        version: file:../vetkeys/frontend/ic_vetkeys
+        specifier: ^0.1.0
+        version: 0.1.0
       '@radix-ui/react-slot':
         specifier: ^1.1.2
         version: 1.1.2(@types/react@19.0.0)(react@19.0.0)
@@ -229,8 +229,8 @@ packages:
   '@dfinity/principal@2.4.0':
     resolution: {integrity: sha512-gBKCyxrPYKdqHVk/Qh9cfxN0Hnt4BvRYVo5KgNEAOKyoySCIPO39xlcfE6JJzWtLqEftQLMbeSMrLrTHDdMZ5w==}
 
-  '@dfinity/vetkeys@file:../vetkeys/frontend/ic_vetkeys':
-    resolution: {directory: ../vetkeys/frontend/ic_vetkeys, type: directory}
+  '@dfinity/vetkeys@0.1.0':
+    resolution: {integrity: sha512-pAAn8AXRUw/fhW72rky5XDxHOdSgeo3gJIaHZdFF2hYFnHwiDqM2WfFI92Y7OYF9sBKg7SMZu4imNF/QQuRRZQ==}
 
   '@esbuild/aix-ppc64@0.25.1':
     resolution: {integrity: sha512-kfYGy8IdzTGy+z0vFGvExZtxkFlA4zAxgKEahG9KE1ScBjpQnFsNOX8KTU5ojNru5ed5CVoJYXFtoxaq5nFbjQ==}
@@ -2499,7 +2499,7 @@ snapshots:
     dependencies:
       '@noble/hashes': 1.6.1
 
-  '@dfinity/vetkeys@file:../vetkeys/frontend/ic_vetkeys':
+  '@dfinity/vetkeys@0.1.0':
     dependencies:
       '@dfinity/agent': 2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0)
       '@dfinity/candid': 2.4.0(@dfinity/principal@2.4.0)

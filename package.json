@@ -14,7 +14,7 @@
     "@dfinity/candid": "^2.4.0",
     "@dfinity/identity": "^2.4.0",
     "@dfinity/principal": "^2.4.0",
-    "@dfinity/vetkeys": "file:../vetkeys/frontend/ic_vetkeys",
+    "@dfinity/vetkeys": "^0.1.0",
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.14",
     "@tanstack/react-query": "^5.61.5",
