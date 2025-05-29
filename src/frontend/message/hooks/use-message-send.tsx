@@ -1,7 +1,7 @@
 import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
-import { IbeCiphertext, IbeIdentity, IbeSeed, DerivedKeyMaterial } from "@dfinity/vetkeys";
+import { IbeCiphertext, IbeIdentity, IbeSeed } from "@dfinity/vetkeys";
 import { useGetRootPublicKey } from "@/hooks/use-get-root-public-key";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
 import { useIdentityStore } from "@/state/identity";
@@ -43,8 +43,8 @@ export function useMessageSend() {
       );
 
       // Encrypt message for sender using VetKey (for sent folder)
-      const dmk = await DerivedKeyMaterial.setup(userKey.signatureBytes());
-      const senderEncryptedMessage = await dmk.encryptMessage(message, "");
+      const dkm = await userKey.asDerivedKeyMaterial();
+      const senderEncryptedMessage = await dkm.encryptMessage(message, "");
 
       const result = await backend.message_send(
         username,

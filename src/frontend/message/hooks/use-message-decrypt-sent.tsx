@@ -1,6 +1,5 @@
 import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
-import { DerivedKeyMaterial } from "@dfinity/vetkeys";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
 import { useIdentityStore } from "@/state/identity";
 
@@ -30,8 +29,8 @@ export function useMessageDecryptSent() {
       }
 
       // Decrypt the VetKey-encrypted message (similar to encrypted notes)
-      const dmk = await DerivedKeyMaterial.setup(userKey.signatureBytes());
-      const decryptedMessage = await dmk.decryptMessage(
+      const dkm = await userKey.asDerivedKeyMaterial();
+      const decryptedMessage = await dkm.decryptMessage(
         new Uint8Array(encryptedData),
         "",
       );
