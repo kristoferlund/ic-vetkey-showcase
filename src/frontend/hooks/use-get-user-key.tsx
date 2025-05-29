@@ -2,7 +2,7 @@ import { useBackendActor } from "@/backend-actor";
 import { useQuery } from "@tanstack/react-query";
 import { EncryptedVetKey, TransportSecretKey } from "@dfinity/vetkeys";
 import { useIdentityStore } from "@/state/identity";
-import { useUserKeyStore } from "@/state/user-key";
+import { useUserKeysStore } from "@/state/user-keys";
 import { useGetRootPublicKey } from "./use-get-root-public-key";
 
 export function useGetUserKey() {
@@ -10,30 +10,26 @@ export function useGetUserKey() {
   const { data: rootPublicKey } = useGetRootPublicKey();
   const identity = useIdentityStore((state) => state.identity);
   const username = useIdentityStore((state) => state.username);
-  const setUserKey = useUserKeyStore((state) => state.setUserKey);
-  const getUserKey = useUserKeyStore((state) => state.getUserKey);
-
-  const principal = identity?.getPrincipal().toText();
+  const setUserKey = useUserKeysStore((state) => state.setUserKey);
+  const getUserKey = useUserKeysStore((state) => state.getUserKey);
 
   return useQuery({
-    queryKey: ["get_user_key", principal],
-    enabled: !!backend && !!identity,
+    queryKey: ["get_user_key", username],
+    enabled: !!backend && !!identity && !!username && !!rootPublicKey,
     queryFn: async () => {
-      if (!backend) {
-        throw new Error("Backend actor not available");
-      }
-      if (!identity || !username || !principal) {
-        throw new Error("Identity not available");
-      }
-      if (!rootPublicKey) {
-        throw new Error("Root public key not available");
+      if (!backend || !identity || !username || !rootPublicKey) {
+        return;
       }
 
-      let userKey = getUserKey(principal);
-      if (userKey) {
-        return userKey;
+      // First, check if we have a cached user key and return it if available
+      // React Query caches queries but in this case we want to use a custom store
+      // to minimize the number of times we fetch the user key
+      const cachedUserKey = getUserKey(username);
+      if (cachedUserKey) {
+        return cachedUserKey;
       }
 
+      // No cached user key, we need to fetch it from the backend
       // The transport key is used to encrypt the user key at time of creation
       // so that it can be securely transported to the frontend
       const transportSecretKey = TransportSecretKey.random();
@@ -50,13 +46,16 @@ export function useGetUserKey() {
         Uint8Array.from(userKeyResult.Ok),
       );
 
-      userKey = encryptedVetKey.decryptAndVerify(
+      // Decrypt and verify the user key using the transport secret key and canister
+      // root public key
+      const userKey = encryptedVetKey.decryptAndVerify(
         transportSecretKey,
         rootPublicKey,
         new TextEncoder().encode(username),
       );
 
-      setUserKey(principal, userKey);
+      // Store the user key in the user key store for future use
+      setUserKey(username, userKey);
 
       return userKey;
     },

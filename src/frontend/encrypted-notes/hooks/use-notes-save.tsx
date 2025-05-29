@@ -1,7 +1,6 @@
 import { useBackendActor } from "@/backend-actor";
 import { useMutation } from "@tanstack/react-query";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
-import { DerivedKeyMaterial } from "@dfinity/vetkeys";
 import { queryClient } from "@/main";
 
 type SaveNoteArgs = {
@@ -25,9 +24,9 @@ export function useNotesSave() {
         throw new Error("Note cannot exceed 512 characters");
       }
 
-      const dmk = await DerivedKeyMaterial.setup(userKey.signatureBytes());
-
-      const encryptedMessage = await dmk.encryptMessage(message, "");
+      // Encrypt the message using the user's derived key material
+      const dkm = await userKey.asDerivedKeyMaterial();
+      const encryptedMessage = await dkm.encryptMessage(message, "");
 
       // Save the encrypted note
       const result = await backend.notes_save(encryptedMessage);
