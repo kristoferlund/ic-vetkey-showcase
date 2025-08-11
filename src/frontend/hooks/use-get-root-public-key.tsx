@@ -1,4 +1,4 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useRootKeyStore } from "@/state/root-key";
 import { DerivedPublicKey } from "@dfinity/vetkeys";
 import { useQuery } from "@tanstack/react-query";

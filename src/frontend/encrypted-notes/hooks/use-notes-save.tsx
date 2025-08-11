@@ -1,4 +1,4 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useMutation } from "@tanstack/react-query";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
 import { queryClient } from "@/main";

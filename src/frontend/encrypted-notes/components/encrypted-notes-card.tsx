@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { LoaderCircle, Lock, Eye, EyeOff, FileText } from "lucide-react";
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useNotesHas } from "../hooks/use-notes-has";
 import { useNotesSave } from "../hooks/use-notes-save";
 import { useNotesDecrypt } from "../hooks/use-notes-decrypt";

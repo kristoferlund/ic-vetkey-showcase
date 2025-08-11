@@ -1,4 +1,4 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useMutation } from "@tanstack/react-query";
 import { IbeCiphertext } from "@dfinity/vetkeys";
 import { useGetUserKey } from "@/hooks/use-get-user-key";

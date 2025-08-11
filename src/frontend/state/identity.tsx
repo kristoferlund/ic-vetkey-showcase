@@ -14,7 +14,7 @@ async function createIdentity(username: string) {
 interface IdentityState {
   identity: Ed25519KeyIdentity | undefined;
   username: string | undefined;
-  login: (username: string) => Promise<void>;
+  login: (username: string) => Promise<Ed25519KeyIdentity>;
   logout: () => Promise<void>;
 }
 
@@ -26,6 +26,7 @@ export const useIdentityStore = create<IdentityState>()(
       login: async (username: string) => {
         const identity = await createIdentity(username);
         set({ identity, username });
+        return identity;
       },
       logout: async () => {
         queryClient.clear();

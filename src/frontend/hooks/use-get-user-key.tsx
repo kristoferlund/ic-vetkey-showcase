@@ -1,4 +1,4 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useQuery } from "@tanstack/react-query";
 import { EncryptedVetKey, TransportSecretKey } from "@dfinity/vetkeys";
 import { useIdentityStore } from "@/state/identity";

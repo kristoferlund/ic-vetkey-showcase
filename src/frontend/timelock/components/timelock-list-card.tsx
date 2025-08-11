@@ -3,7 +3,7 @@ import { useTimeLockOpen } from "@/timelock/hooks/use-timelock-open";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle, Lock, LockOpen } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 
 function Countdown({ target }: { target: Date }) {
   const [timeLeft, setTimeLeft] = useState(() => target.getTime() - Date.now());

@@ -10,7 +10,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useMessageSend } from "../hooks/use-message-send";
 import { useMessageListReceived } from "../hooks/use-message-list-received";
 import { useMessageListSent } from "../hooks/use-message-list-sent";

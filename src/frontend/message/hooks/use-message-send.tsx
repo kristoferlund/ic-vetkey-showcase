@@ -1,4 +1,4 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";
 import { IbeCiphertext, IbeIdentity, IbeSeed } from "@dfinity/vetkeys";
