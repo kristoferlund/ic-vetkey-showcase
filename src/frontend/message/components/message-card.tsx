@@ -17,13 +17,12 @@ import { useMessageListSent } from "../hooks/use-message-list-sent";
 import { useMessageDecryptReceived } from "../hooks/use-message-decrypt-received";
 import { useMessageDecryptSent } from "../hooks/use-message-decrypt-sent";
 import { useState } from "react";
-import { useIdentityStore } from "@/state/identity";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
 
 type TabType = "inbox" | "outbox" | "compose";
 
 export default function MessageCard() {
-  const { actor: backend } = useBackendActor();
+  const { actor: backend, isAuthenticated } = useBackendActor();
   const { mutateAsync: sendMessage, isPending: isSending } = useMessageSend();
   const { data: receivedMessages, isLoading: receivedLoading } =
     useMessageListReceived();
@@ -32,7 +31,6 @@ export default function MessageCard() {
     useMessageDecryptReceived();
   const { mutateAsync: decryptSent, isPending: isDecryptingSent } =
     useMessageDecryptSent();
-  const identity = useIdentityStore((state) => state.identity);
   const { isPending: userKeyPending } = useGetUserKey();
 
   const [activeTab, setActiveTab] = useState<TabType>("inbox");
@@ -115,7 +113,7 @@ export default function MessageCard() {
     return date.toLocaleString();
   };
 
-  const disabled = !backend || !identity || userKeyPending;
+  const disabled = !backend || !isAuthenticated || userKeyPending;
 
   return (
     <div className="w-full flex flex-col text-lg text-white gap-5 border p-5 bg-white/10 rounded-2xl">
@@ -141,11 +139,10 @@ export default function MessageCard() {
           onClick={() => {
             setActiveTab("inbox");
           }}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-colors text-xs ${
-            activeTab === "inbox"
-              ? "bg-white/20 text-white"
-              : "text-white/60 hover:text-white/80"
-          }`}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-colors text-xs ${activeTab === "inbox"
+            ? "bg-white/20 text-white"
+            : "text-white/60 hover:text-white/80"
+            }`}
         >
           <Inbox className="w-4 h-4" />
           Inbox
@@ -159,11 +156,10 @@ export default function MessageCard() {
           onClick={() => {
             setActiveTab("outbox");
           }}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-colors text-xs ${
-            activeTab === "outbox"
-              ? "bg-white/20 text-white"
-              : "text-white/60 hover:text-white/80"
-          }`}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-colors text-xs ${activeTab === "outbox"
+            ? "bg-white/20 text-white"
+            : "text-white/60 hover:text-white/80"
+            }`}
         >
           <Send className="w-4 h-4" />
           Sent
@@ -177,11 +173,10 @@ export default function MessageCard() {
           onClick={() => {
             setActiveTab("compose");
           }}
-          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-colors text-xs ${
-            activeTab === "compose"
-              ? "bg-white/20 text-white"
-              : "text-white/60 hover:text-white/80"
-          }`}
+          className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md transition-colors text-xs ${activeTab === "compose"
+            ? "bg-white/20 text-white"
+            : "text-white/60 hover:text-white/80"
+            }`}
         >
           <MessageSquare className="w-4 h-4" />
           Compose

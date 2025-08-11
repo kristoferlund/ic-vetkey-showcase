@@ -6,10 +6,8 @@ import { LoaderCircle } from "lucide-react";
 import { useBackendActor } from "@/main";
 
 export default function LoginCard() {
-  const identity = useIdentityStore((state) => state.identity);
   const login = useIdentityStore((state) => state.login);
-  const { authenticate } = useBackendActor();
-
+  const { authenticate, isAuthenticated } = useBackendActor();
   const { isPending: userKeyPending } = useGetUserKey();
 
   const doLogin = async (formData: FormData) => {
@@ -17,7 +15,7 @@ export default function LoginCard() {
     await authenticate(_identity);
   };
 
-  if (identity && userKeyPending) {
+  if (isAuthenticated && userKeyPending) {
     return (
       <div className="flex flex-col bg-[#9a0063]/50 p-5 rounded-xl text-lg text-white gap-5 w-full">
         <div className="flex items-center justify-center gap-3">
@@ -28,7 +26,7 @@ export default function LoginCard() {
     );
   }
 
-  if (identity) {
+  if (isAuthenticated) {
     return null;
   }
 

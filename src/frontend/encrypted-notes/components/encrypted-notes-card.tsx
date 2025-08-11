@@ -7,15 +7,13 @@ import { useNotesSave } from "../hooks/use-notes-save";
 import { useNotesDecrypt } from "../hooks/use-notes-decrypt";
 import { useEffect, useState } from "react";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
-import { useIdentityStore } from "@/state/identity";
 
 export default function EncryptedNotesCard() {
-  const { actor: backend } = useBackendActor();
+  const { actor: backend, isAuthenticated } = useBackendActor();
   const { data: hasNote, isLoading: hasNoteLoading } = useNotesHas();
   const { mutateAsync: saveNote, isPending: isSaving } = useNotesSave();
   const { mutateAsync: decryptNote, isPending: isDecrypting } =
     useNotesDecrypt();
-  const identity = useIdentityStore((state) => state.identity);
   const { isPending: userKeyPending } = useGetUserKey();
 
   const [noteText, setNoteText] = useState("");
@@ -28,7 +26,7 @@ export default function EncryptedNotesCard() {
     setDecryptedNote(null);
     setShowDecrypted(false);
     setError(null);
-  }, [identity]);
+  }, [isAuthenticated]);
 
   const handleSaveNote = async () => {
     try {
@@ -63,7 +61,7 @@ export default function EncryptedNotesCard() {
     }
   };
 
-  const disabled = !backend || hasNoteLoading || !identity || userKeyPending;
+  const disabled = !backend || hasNoteLoading || !isAuthenticated || userKeyPending;
 
   return (
     <div className="w-full flex flex-col text-lg text-white gap-5 border p-5 bg-white/10 rounded-2xl">
