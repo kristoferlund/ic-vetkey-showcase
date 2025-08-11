@@ -3,15 +3,18 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useIdentityStore } from "@/state/identity";
 import { LoaderCircle } from "lucide-react";
+import { useBackendActor } from "@/main";
 
 export default function LoginCard() {
   const identity = useIdentityStore((state) => state.identity);
   const login = useIdentityStore((state) => state.login);
+  const { authenticate } = useBackendActor();
 
   const { isPending: userKeyPending } = useGetUserKey();
 
   const doLogin = async (formData: FormData) => {
-    await login(formData.get("username") as string);
+    const _identity = await login(formData.get("username") as string);
+    await authenticate(_identity);
   };
 
   if (identity && userKeyPending) {

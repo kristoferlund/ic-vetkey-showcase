@@ -1,4 +1,4 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useQuery } from "@tanstack/react-query";
 import { useIdentityStore } from "@/state/identity";
 

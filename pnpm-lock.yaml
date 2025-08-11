@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@dfinity/agent':
-        specifier: ^2.4.0
-        version: 2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0)
+        specifier: ^3.1.0
+        version: 3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0)
       '@dfinity/candid':
-        specifier: ^2.4.0
-        version: 2.4.0(@dfinity/principal@2.4.0)
+        specifier: ^3.1.0
+        version: 3.2.0(@dfinity/principal@3.2.0)
       '@dfinity/identity':
-        specifier: ^2.4.0
-        version: 2.4.0(@dfinity/agent@2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0)
+        specifier: ^3.1.0
+        version: 3.2.0(@dfinity/agent@3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0))(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/curves@1.9.6)(@noble/hashes@1.8.0)
       '@dfinity/principal':
-        specifier: ^2.4.0
-        version: 2.4.0
+        specifier: ^3.1.0
+        version: 3.2.0
       '@dfinity/vetkeys':
         specifier: ^0.1.0
         version: 0.1.0
@@ -45,8 +45,8 @@ importers:
         specifier: ^16.4.7
         version: 16.4.7
       ic-use-actor:
-        specifier: ^0.1.0
-        version: 0.1.0(@dfinity/agent@2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0))(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(react@19.0.0)
+        specifier: ^0.2.0
+        version: 0.2.0(@dfinity/agent@3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0))(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(react@19.0.0)(solid-js@1.9.5)
       lucide-react:
         specifier: ^0.483.0
         version: 0.483.0(react@19.0.0)
@@ -215,19 +215,40 @@ packages:
       '@dfinity/candid': ^2.4.0
       '@dfinity/principal': ^2.4.0
 
+  '@dfinity/agent@3.2.0':
+    resolution: {integrity: sha512-GIobACWPxhjdnFMKR7GS4nMqlq1rMYEImYvSWfNAtPbAAwNqfNk7Sgr6/2qLt4XWxiRhbShk65w+hLJGor0xlw==}
+    peerDependencies:
+      '@dfinity/candid': 3.2.0
+      '@dfinity/principal': 3.2.0
+      '@noble/hashes': ^1.8.0
+
   '@dfinity/candid@2.4.0':
     resolution: {integrity: sha512-ZVuBIFlWOZOvEZaLtBKE2666rab32XSdHo1BtzdDy36NMvQbRXkZRbIEd7xoZXRud2wK7pk5cNsZULnXghAORg==}
     peerDependencies:
       '@dfinity/principal': ^2.4.0
 
-  '@dfinity/identity@2.4.0':
-    resolution: {integrity: sha512-OxszeQ8J1i0eXThckE35lz9xHvlemsa1c/H0zyfJoomWL2NeyoFrHaWtxFRyyQrTlgCvEWgRZKed7U1MhEJwjg==}
+  '@dfinity/candid@3.2.0':
+    resolution: {integrity: sha512-HbyXp1QGHU/xa2lBSL9GjoHFAGbPiFrgJwabK0/VZzrcjQPKjv7G/krMKCIMm4pfaGl3ChWan9FyV9Ax/an3/g==}
     peerDependencies:
-      '@dfinity/agent': ^2.4.0
-      '@dfinity/principal': ^2.4.0
+      '@dfinity/principal': 3.2.0
+
+  '@dfinity/cbor@0.2.2':
+    resolution: {integrity: sha512-GPJpH73kDEKbUBdUjY80lz7cq9l0vm1h/7ppejPV6O0ZTqCLrYspssYvqjRmK4aNnJ/SKXsP0rg9LYX7zpegaA==}
+
+  '@dfinity/identity@3.2.0':
+    resolution: {integrity: sha512-sZ4130KIxcqguK1heS+BPHCdN8Pnaisz6qYJoI+mEH3g7EmE8l/5GlxlZHmhX12KMloHIDd5UFHBSXlLL96vJw==}
+    peerDependencies:
+      '@dfinity/agent': 3.2.0
+      '@dfinity/candid': 3.2.0
+      '@dfinity/principal': 3.2.0
+      '@noble/curves': ^1.9.2
+      '@noble/hashes': ^1.8.0
 
   '@dfinity/principal@2.4.0':
     resolution: {integrity: sha512-gBKCyxrPYKdqHVk/Qh9cfxN0Hnt4BvRYVo5KgNEAOKyoySCIPO39xlcfE6JJzWtLqEftQLMbeSMrLrTHDdMZ5w==}
+
+  '@dfinity/principal@3.2.0':
+    resolution: {integrity: sha512-2VY3dLKLCxiZdJmgj+5LPZxb5DeJ0EJABUXGeYitAx6EikRpNYnpZUOXpb6TjPOUT67AednA7aLAP6xnXNV3nA==}
 
   '@dfinity/vetkeys@0.1.0':
     resolution: {integrity: sha512-pAAn8AXRUw/fhW72rky5XDxHOdSgeo3gJIaHZdFF2hYFnHwiDqM2WfFI92Y7OYF9sBKg7SMZu4imNF/QQuRRZQ==}
@@ -460,6 +481,10 @@ packages:
 
   '@noble/curves@1.9.1':
     resolution: {integrity: sha512-k11yZxZg+t+gWvBbIswW0yoJlu8cHOC7dhunwOzoWH/mXGBiYyR4YY6hAEK/3EUs4UpB8la1RfdRpeGsFHkWsA==}
+    engines: {node: ^14.21.3 || >=16}
+
+  '@noble/curves@1.9.6':
+    resolution: {integrity: sha512-GIKz/j99FRthB8icyJQA51E8Uk5hXmdyThjgQXRKiv9h0zeRlzSCLIzFw6K1LotZ3XuB7yzlf76qk7uBmTdFqA==}
     engines: {node: ^14.21.3 || >=16}
 
   '@noble/hashes@1.6.1':
@@ -931,6 +956,17 @@ packages:
     resolution: {integrity: sha512-aEUPCckHDcFyxpwFm0AIkbtv6PpUp3xTb9wYGFjtABynXjCYKkWoxX0AOK9NT9XCrdk6mBBUOeHQS+RKdcNO1A==}
     peerDependencies:
       vite: ^4 || ^5 || ^6
+
+  '@xstate/store@3.8.5':
+    resolution: {integrity: sha512-XzuEv/xWkoLDh6PMHX+uTCTRzPMi96/hwhg263h7d4JMPlL+0FIa/5xIyx45+zxHcWzM7OLAhr29kGW7qPNoYA==}
+    peerDependencies:
+      react: ^18.2.0 || ^19.0.0
+      solid-js: ^1.7.6
+    peerDependenciesMeta:
+      react:
+        optional: true
+      solid-js:
+        optional: true
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -1468,11 +1504,11 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  ic-use-actor@0.1.0:
-    resolution: {integrity: sha512-Q2umozofJDYAZf8apfgKj432PRBpQ1BN03KNtO3uafAxTJJKDCwXj8gq3ijpMUV4IBgLB0plt5nJqqpxYKMqmA==}
+  ic-use-actor@0.2.0:
+    resolution: {integrity: sha512-ucfOPk7d2m8s8tTC3galHWcT8iiKIiajks397en4bYXOXjoH2CzettvJvbMlNvfBJPHbZ4trQibMF1/jeNp7uQ==}
     peerDependencies:
-      '@dfinity/agent': '>=2.1.2'
-      '@dfinity/candid': '>=2.1.2'
+      '@dfinity/agent': '>=3.1.0'
+      '@dfinity/candid': '>=3.1.0'
       react: '>=18.0.0'
 
   idb-keyval@6.2.2:
@@ -2483,21 +2519,39 @@ snapshots:
       buffer: 6.0.3
       simple-cbor: 0.4.1
 
+  '@dfinity/agent@3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0)':
+    dependencies:
+      '@dfinity/candid': 3.2.0(@dfinity/principal@3.2.0)
+      '@dfinity/cbor': 0.2.2
+      '@dfinity/principal': 3.2.0
+      '@noble/curves': 1.9.6
+      '@noble/hashes': 1.8.0
+
   '@dfinity/candid@2.4.0(@dfinity/principal@2.4.0)':
     dependencies:
       '@dfinity/principal': 2.4.0
 
-  '@dfinity/identity@2.4.0(@dfinity/agent@2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0)':
+  '@dfinity/candid@3.2.0(@dfinity/principal@3.2.0)':
     dependencies:
-      '@dfinity/agent': 2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0)
-      '@dfinity/principal': 2.4.0
-      '@noble/curves': 1.9.1
-      '@noble/hashes': 1.6.1
-      borc: 2.1.2
+      '@dfinity/principal': 3.2.0
+
+  '@dfinity/cbor@0.2.2': {}
+
+  '@dfinity/identity@3.2.0(@dfinity/agent@3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0))(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/curves@1.9.6)(@noble/hashes@1.8.0)':
+    dependencies:
+      '@dfinity/agent': 3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0)
+      '@dfinity/candid': 3.2.0(@dfinity/principal@3.2.0)
+      '@dfinity/principal': 3.2.0
+      '@noble/curves': 1.9.6
+      '@noble/hashes': 1.8.0
 
   '@dfinity/principal@2.4.0':
     dependencies:
       '@noble/hashes': 1.6.1
+
+  '@dfinity/principal@3.2.0':
+    dependencies:
+      '@noble/hashes': 1.8.0
 
   '@dfinity/vetkeys@0.1.0':
     dependencies:
@@ -2656,6 +2710,10 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@noble/curves@1.9.1':
+    dependencies:
+      '@noble/hashes': 1.8.0
+
+  '@noble/curves@1.9.6':
     dependencies:
       '@noble/hashes': 1.8.0
 
@@ -3089,6 +3147,11 @@ snapshots:
       vite: 6.2.2(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(tsx@4.19.3)
     transitivePeerDependencies:
       - '@swc/helpers'
+
+  '@xstate/store@3.8.5(react@19.0.0)(solid-js@1.9.5)':
+    optionalDependencies:
+      react: 19.0.0
+      solid-js: 1.9.5
 
   acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
@@ -3867,11 +3930,14 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  ic-use-actor@0.1.0(@dfinity/agent@2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0))(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(react@19.0.0):
+  ic-use-actor@0.2.0(@dfinity/agent@3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0))(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(react@19.0.0)(solid-js@1.9.5):
     dependencies:
-      '@dfinity/agent': 2.4.0(@dfinity/candid@2.4.0(@dfinity/principal@2.4.0))(@dfinity/principal@2.4.0)
-      '@dfinity/candid': 2.4.0(@dfinity/principal@2.4.0)
+      '@dfinity/agent': 3.2.0(@dfinity/candid@3.2.0(@dfinity/principal@3.2.0))(@dfinity/principal@3.2.0)(@noble/hashes@1.8.0)
+      '@dfinity/candid': 3.2.0(@dfinity/principal@3.2.0)
+      '@xstate/store': 3.8.5(react@19.0.0)(solid-js@1.9.5)
       react: 19.0.0
+    transitivePeerDependencies:
+      - solid-js
 
   idb-keyval@6.2.2: {}
 

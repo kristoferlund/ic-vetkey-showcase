@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTimeLockCreate } from "../hooks/use-timelock-create";
 import { LoaderCircle, Timer } from "lucide-react";
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 
 export default function TimeLockCreateCard() {
   const { mutateAsync: createLock, isPending } = useTimeLockCreate();

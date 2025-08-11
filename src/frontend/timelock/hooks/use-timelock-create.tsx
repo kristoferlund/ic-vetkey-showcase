@@ -1,4 +1,4 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { bigintToLEUint8Array } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/main";

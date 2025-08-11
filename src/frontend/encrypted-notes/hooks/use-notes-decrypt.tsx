@@ -1,7 +1,6 @@
-import { useBackendActor } from "@/backend-actor";
+import { useBackendActor } from "@/main";
 import { useMutation } from "@tanstack/react-query";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
-import { DerivedKeyMaterial } from "@dfinity/vetkeys";
 
 export function useNotesDecrypt() {
   const { actor: backend } = useBackendActor();
@@ -24,7 +23,7 @@ export function useNotesDecrypt() {
       const encryptedNote = noteResult.Ok;
 
       // Use the private key to decrypt the note
-      const dkm = await DerivedKeyMaterial.setup(userKey.signatureBytes());
+      const dkm = await userKey.asDerivedKeyMaterial();
       const decryptedMessage = await dkm.decryptMessage(
         encryptedNote.data as Uint8Array,
         "",

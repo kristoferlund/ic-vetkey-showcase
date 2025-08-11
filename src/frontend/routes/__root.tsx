@@ -1,5 +1,4 @@
 import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
-
 import Header from "@/components/header";
 import LoginCard from "@/components/login-card";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
