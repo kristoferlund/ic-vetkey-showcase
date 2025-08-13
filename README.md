@@ -1,6 +1,6 @@
 # VetKeys Showcase
 
-A demonstration application showcasing the capabilities of **VetKeys** (Verifiable Encrypted Threshold Keys) on the Internet Computer. VetKeys addresses the fundamental challenge of storing secrets on-chain by allowing cryptographic key derivation without exposing private keys.
+A demonstration application showcasing **VetKeys** (Verifiable Encrypted Threshold Keys) on the Internet Computer. VetKeys addresses the fundamental challenge of storing secrets on-chain by enabling cryptographic key derivation without exposing private keys.
 
 ![VetKeys](./media/vetkey-video.gif)
 
@@ -10,15 +10,15 @@ This showcase demonstrates three distinct use cases for VetKeys, each highlighti
 
 ### 1. TimeLock
 
-Uses identity-based encryption (IBE) with timestamps as identities. Messages are encrypted with a future timestamp, and the canister can derive the decryption key only after that time has passed. This allows for time-delayed decryption where data becomes publicly accessible at a predetermined time.
+Uses identity-based encryption (IBE) with timestamps as identities. Messages are encrypted with a future timestamp, and the canister can derive the decryption key only after that time has passed. This enables time-delayed decryption where data becomes publicly accessible at a predetermined time.
 
-**Key Feature**: Canister-side decryption is acceptable here since the data is intended to become publicly accessible after the time lock expires.
+**Key Feature**: Canister-side decryption is acceptable since the data is intended to become public after the time lock expires.
 
 ### 2. Encrypted Notes
 
-Demonstrates personal key derivation using VetKeys. Users derive their own cryptographic keys, which are encrypted and transported securely to the frontend for local encryption/decryption. The canister stores only encrypted data and never has access to plaintext content.
+Demonstrates personal key derivation using VetKeys. Users derive their own cryptographic keys, which are encrypted and transported securely to the frontend for local encryption/decryption. The canister stores only encrypted data and never accesses plaintext content.
 
-**Key Feature**: All encryption and decryption happens client-side, ensuring maximum privacy.
+**Key Feature**: All encryption and decryption happen client-side, ensuring maximum privacy.
 
 ### 3. Messages
 
@@ -26,14 +26,18 @@ Implements identity-based encryption for user-to-user messaging. Senders encrypt
 
 **Key Feature**: Enables secure messaging without requiring prior key exchange between users.
 
-## Live Demo
+## Try It!
 
-Access the deployed application: [https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io](https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io/)
+ICP Ninja is a browser IDE for creating Internet Computer smart contracts. Write and deploy entire applications directly on-chain from your browser. Deploy this example in under a minute:
 
-> [!IMPORTANT]  
-> This is a demonstration application. It is not intended for production use and should not be used to store sensitive
-> information. This being a demo app also means that the code is not optimised for security and performance. Most canister
-> endpoints are public and can be called by anyone.
+[![](https://icp.ninja/assets/open.svg)](https://icp.ninja/editor?g=https://github.com/kristoferlund/ic-vetkey-showcase/tree/chainkey-testing-canister)
+
+You can also try a predeployed version:
+
+[https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io](https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io/)
+
+> [!IMPORTANT]
+> This is a demonstration application not intended for production use. Do not use it to store sensitive information. As a demo app, the code is not optimized for security or performance. Most canister endpoints are public and can be called by anyone.
 
 ## Prerequisites
 
@@ -41,10 +45,6 @@ Access the deployed application: [https://ddnbn-miaaa-aaaal-qsl3q-cai.icp0.io](h
 - [pnpm](https://pnpm.io/) package manager
 
 ## Local Development
-
-Fork or clone the repository or:
-
-[![Open locally in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/kristoferlund/ic-vetkey-showcase)
 
 1. **Install dependencies:**
 
@@ -78,14 +78,14 @@ Fork or clone the repository or:
 
 ```
 src/
-├── backend/          # Rust canister code
-│   ├── timelock/     # TimeLock feature implementation
-│   ├── encrypted_notes/  # Encrypted notes feature
-│   └── message/      # Messaging feature
-└── frontend/         # React frontend application
-    ├── timelock/     # TimeLock UI components
-    ├── encrypted-notes/  # Encrypted notes UI
-    └── message/      # Messaging UI
+├── backend/              # Rust canister code
+│   ├── timelock/        # TimeLock feature implementation
+│   ├── encrypted_notes/ # Encrypted notes feature
+│   └── message/         # Messaging feature
+└── frontend/            # React frontend application
+    ├── timelock/        # TimeLock UI components
+    ├── encrypted-notes/ # Encrypted notes UI
+    └── message/         # Messaging UI
 ```
 
 ## Learn More
