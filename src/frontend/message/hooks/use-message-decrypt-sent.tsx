@@ -1,7 +1,6 @@
 import { useBackendActor } from "@/main";
 import { useMutation } from "@tanstack/react-query";
 import { useGetUserKey } from "@/hooks/use-get-user-key";
-import { useIdentityStore } from "@/state/identity";
 
 type DecryptSentMessageArgs = {
   messageId: number;
@@ -9,9 +8,8 @@ type DecryptSentMessageArgs = {
 };
 
 export function useMessageDecryptSent() {
-  const { actor: backend } = useBackendActor();
+  const { actor: backend, isAuthenticated } = useBackendActor();
   const { data: userKey } = useGetUserKey();
-  const identity = useIdentityStore((state) => state.identity);
 
   return useMutation({
     mutationFn: async ({
@@ -24,8 +22,8 @@ export function useMessageDecryptSent() {
       if (!userKey) {
         throw new Error("User key not available");
       }
-      if (!identity) {
-        throw new Error("Identity not available");
+      if (!isAuthenticated) {
+        throw new Error("Not authenticated");
       }
 
       // Decrypt the VetKey-encrypted message (similar to encrypted notes)

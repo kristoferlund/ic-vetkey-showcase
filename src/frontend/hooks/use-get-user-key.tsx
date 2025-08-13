@@ -6,18 +6,17 @@ import { useUserKeysStore } from "@/state/user-keys";
 import { useGetRootPublicKey } from "./use-get-root-public-key";
 
 export function useGetUserKey() {
-  const { actor: backend } = useBackendActor();
+  const { actor: backend, isAuthenticated } = useBackendActor();
   const { data: rootPublicKey } = useGetRootPublicKey();
-  const identity = useIdentityStore((state) => state.identity);
   const username = useIdentityStore((state) => state.username);
   const setUserKey = useUserKeysStore((state) => state.setUserKey);
   const getUserKey = useUserKeysStore((state) => state.getUserKey);
 
   return useQuery({
     queryKey: ["get_user_key", username],
-    enabled: !!backend && !!identity && !!username && !!rootPublicKey,
+    enabled: !!backend && isAuthenticated && !!username && !!rootPublicKey,
     queryFn: async () => {
-      if (!backend || !identity || !username || !rootPublicKey) {
+      if (!backend || !isAuthenticated || !username || !rootPublicKey) {
         return;
       }
 

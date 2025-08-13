@@ -5,7 +5,7 @@ use crate::{
     vetkey::{create_empty_transport_key, get_root_public_key, VETKEY_PUBLIC_KEY_NAME},
 };
 use candid::CandidType;
-use ic_vetkeys::{DerivedPublicKey, EncryptedVetKey, IBECiphertext};
+use ic_vetkeys::{DerivedPublicKey, EncryptedVetKey, IbeCiphertext};
 use serde_bytes::ByteBuf;
 use std::{
     cell::RefCell,
@@ -103,7 +103,7 @@ impl TimeLockManager {
                         .decrypt_and_verify(&transport_key, &derived_root_public_key, &input)
                         .map_err(|_| "Failed to decrypt and verify vetkey")?;
 
-                    let ibe_ciphertext = IBECiphertext::deserialize(time_lock.data.as_slice())?;
+                    let ibe_ciphertext = IbeCiphertext::deserialize(time_lock.data.as_slice())?;
 
                     let decrypted_data = ibe_ciphertext.decrypt(&vetkey)?;
 

@@ -3,8 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useIdentityStore } from "@/state/identity";
 
 export function useMessageListSent() {
-  const { actor: backend } = useBackendActor();
-  const identity = useIdentityStore((state) => state.identity);
+  const { actor: backend, isAuthenticated } = useBackendActor();
   const username = useIdentityStore((state) => state.username);
 
   return useQuery({
@@ -13,8 +12,8 @@ export function useMessageListSent() {
       if (!backend) {
         throw new Error("Backend actor not available");
       }
-      if (!identity || !username) {
-        throw new Error("Identity or username not available");
+      if (!username) {
+        throw new Error("Username not available");
       }
 
       const result = await backend.message_list_sent(username);
@@ -25,6 +24,6 @@ export function useMessageListSent() {
 
       return result.Ok;
     },
-    enabled: !!backend && !!identity && !!username,
+    enabled: !!backend && isAuthenticated && !!username,
   });
 }
