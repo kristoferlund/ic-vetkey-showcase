@@ -7,12 +7,11 @@ import { useBackendActor } from "@/main";
 
 export default function LoginCard() {
   const login = useIdentityStore((state) => state.login);
-  const { authenticate, isAuthenticated } = useBackendActor();
+  const { isAuthenticated } = useBackendActor();
   const { isPending: userKeyPending } = useGetUserKey();
 
-  const doLogin = async (formData: FormData) => {
-    const _identity = await login(formData.get("username") as string);
-    await authenticate(_identity);
+  const doLogin = (formData: FormData) => {
+    void login(formData.get("username") as string);
   };
 
   if (isAuthenticated && userKeyPending) {
